@@ -30,7 +30,7 @@ Siga os passos abaixo para subir o ambiente completo (API + Banco de Dados):
 
 1.  **Clone o repositório:**
     ```bash
-    git clone [https://github.com/Rogeriocsl/sias-backend.git](https://github.com/SEU_USUARIO/sias-backend.git)
+    git clone [https://github.com/Rogeriocsl/sias-backend.git]
     cd sias-backend
     ```
 
