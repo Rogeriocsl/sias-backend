@@ -17,5 +17,38 @@ import java.util.List;
 @Builder
 
 public class Paciente {
-    String name ;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @NotBlank(message = "O nome é obrigatório")
+    @Size(min = 3, max = 150)
+    @Column(nullable = false, length = 150)
+    private String nome;
+
+    @NotBlank(message = "O CPF é obrigatório")
+    @Size(min = 11, max = 11)
+    @Column(nullable = false, unique = true, length = 11)
+    private String cpf;
+
+    @NotNull(message = "A data de nascimento é obrigatória")
+    @Column(name = "data_nascimento", nullable = false)
+    private LocalDate dataNascimento;
+
+    @NotBlank(message = "O telefone é obrigatório")
+    @Column(nullable = false, length = 20)
+    private String telefone;
+
+    @Enumerated(EnumType.STRING)
+    @Column(length = 20)
+    private Genero genero;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "tipo_sanguineo", length = 10)
+    private TipoSanguineo tipoSanguineo;
+
+    @ElementCollection // Cria uma tabela auxiliar para a lista simples
+    @CollectionTable(name = "paciente_condicoes", joinColumns = @JoinColumn(name = "paciente_id"))
+    @Column(name = "condicao")
+    private List<String> condicoesSaude;
 }
