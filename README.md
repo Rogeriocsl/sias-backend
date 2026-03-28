@@ -50,7 +50,7 @@ Siga os passos abaixo para subir o ambiente completo (API + Banco de Dados):
 
 ## 🔌 Informações de Acesso
 
-*   **API Base URL:** `[http://localhost:8080](http://localhost:8080/swagger-ui/index.html)`
+*   **API Base URL:** `http://localhost:8080/swagger-ui/index.html`
 *   **MySQL Database:** `localhost:3306`
 *   **Database Name:** `sias_db`
 *   **User:** `admin` | **Password:** `password123`
