@@ -65,6 +65,8 @@ public class AvaliacaoFisica {
     }
 
     public void calcularImc() {
-        this.imc = peso / (altura * altura);
+        if (this.altura != null && this.altura > 0 && this.peso != null) {
+            this.imc = this.peso / (this.altura * this.altura);
+        }
     }
 }
