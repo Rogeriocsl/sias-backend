@@ -60,10 +60,6 @@ public class AvaliacaoFisica {
     }
 
     @PreUpdate
-    public void preUpdate() {
-        calcularImc();
-    }
-
     public void calcularImc() {
         if (this.altura != null && this.altura > 0 && this.peso != null) {
             this.imc = this.peso / (this.altura * this.altura);
