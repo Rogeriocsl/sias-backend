@@ -1,7 +1,6 @@
 package br.com.sias.api.model;
 
-import br.com.sias.api.model.enums.Perfis;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import br.com.sias.api.model.enums.Perfil;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
@@ -43,7 +42,7 @@ public class Usuario {
 
     @Enumerated(EnumType.STRING)
     @Column(name = "perfil", length = 10)
-    private Perfis perfis;
+    private Perfil perfil;
 
 
 }
