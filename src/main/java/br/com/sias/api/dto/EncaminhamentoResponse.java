@@ -1,10 +1,15 @@
 package br.com.sias.api.dto;
 
+import lombok.Getter;
+import lombok.Setter;
 import java.time.LocalDate;
 
-public class EmcaminhamentoResponse {
+@Getter
+@Setter
+public class EncaminhamentoResponse {
+    private Long id;
     private Long pacienteId;
-    private LocalDate DataEncaminhamento;
+    private LocalDate dataEncaminhamento;
     private String motivo;
     private String status;
     private String observacoes;
