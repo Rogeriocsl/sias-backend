@@ -24,7 +24,9 @@ public class UsuarioService {
     private UsuarioResponse converterParaResponse(Usuario usuario) {
         UsuarioResponse response = new UsuarioResponse();
         response.setId(usuario.getId());
+        response.setLogin(usuario.getLogin());
         response.setNome(usuario.getNome());
+        response.setPerfil(usuario.getPerfil());
         response.setEmail(usuario.getEmail());
         return response;
     }
@@ -34,6 +36,13 @@ public class UsuarioService {
         if (repository.existsByEmail(usuario.getEmail())) {
             throw new RuntimeException("Email já cadastrado");
         }
+        if (repository.existsByLogin(usuario.getLogin())) {
+            throw new RuntimeException("Login já cadastrado");
+        }
+        if(usuario.getPerfil() == null || usuario.getPerfil().equals("")) {
+            throw new RuntimeException("Perfil deve ser selecionado");
+        }
+
         if (usuario.getSenha() != null && !usuario.getSenha().startsWith("$2a$")) {
             usuario.setSenha(passwordEncoder.encode(usuario.getSenha()));
         }
