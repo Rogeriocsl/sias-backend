@@ -12,6 +12,8 @@ import br.com.sias.api.repository.PacienteRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class EncaminhamentoService {
     
@@ -34,12 +36,6 @@ public class EncaminhamentoService {
         return response;
     }
 
-    public EncaminhamentoResponse criar(EncaminhamentoRequest dto){
-        Encaminhamento encaminhamento = converterParaEntity(dto);
-        Encaminhamento salvo = repository.save(encaminhamento);
-        return converterParaResponse(salvo);
-    }
-
     private Encaminhamento converterParaEntity(EncaminhamentoRequest dto){
         Encaminhamento encaminhamento = new Encaminhamento();
         Paciente paciente = pacienteRepository.findById(dto.getPacienteId()).orElseThrow(() -> new RuntimeException("Paciente não encontrado"));
@@ -49,10 +45,26 @@ public class EncaminhamentoService {
         encaminhamento.setDataEncaminhamento(dto.getDataEncaminhamento());
         encaminhamento.setStatus(EncaminhamentoStatus.PENDENTE);
         encaminhamento.setObservacoes(dto.getObservacoes());
-
         return encaminhamento;
 
     }
 
+    public EncaminhamentoResponse criar(EncaminhamentoRequest dto){
+        Encaminhamento encaminhamento = converterParaEntity(dto);
+        Encaminhamento salvo = repository.save(encaminhamento);
+        return converterParaResponse(salvo);
+    }
+
+
+    public List<Encaminhamento> listar(){
+        return repository.findAll();
+    }
+
+    public void deletar(Long id){
+        if(repository.existsById(id)){
+            throw new RuntimeException("Encaminhamento não encontrado");
+            }
+        repository.deleteById(id);
+    }
 
 }
