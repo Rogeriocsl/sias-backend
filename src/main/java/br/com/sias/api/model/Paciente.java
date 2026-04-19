@@ -51,8 +51,4 @@ public class Paciente {
     @CollectionTable(name = "paciente_condicoes", joinColumns = @JoinColumn(name = "paciente_id"))
     @Column(name = "condicao")
     private List<String> condicoesSaude;
-
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "endereco_id")
-    private Endereco endereco;
 }
