@@ -1,4 +1,5 @@
 package br.com.sias.api.model;
+import br.com.sias.api.model.enums.DoencaCronica;
 import br.com.sias.api.model.enums.Genero;
 import br.com.sias.api.model.enums.TipoSanguineo;
 import jakarta.persistence.*;
@@ -47,8 +48,10 @@ public class Paciente {
     @Column(name = "tipo_sanguineo", length = 10)
     private TipoSanguineo tipoSanguineo;
 
-    @ElementCollection // Cria uma tabela auxiliar para a lista simples
+    @ElementCollection(targetClass = DoencaCronica.class)
+    @Enumerated(EnumType.STRING)
     @CollectionTable(name = "paciente_condicoes", joinColumns = @JoinColumn(name = "paciente_id"))
     @Column(name = "condicao")
-    private List<String> condicoesSaude;
+    private List<DoencaCronica> condicoesSaude;
+
 }
