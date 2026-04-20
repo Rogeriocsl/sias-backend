@@ -4,6 +4,7 @@ import br.com.sias.api.model.enums.Perfil;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.*;
 
@@ -21,12 +22,12 @@ public class Usuario {
     private Long id;
 
     @NotBlank(message = "O nome é obrigatório")
-    @Size(min = 3, max = 150)
+    @Size(min = 3, max = 150, message = "Nome deve ter no minimo 3 caracteres" )
     @Column(nullable = false, length = 150)
     private String nome;
 
     @NotBlank(message = "O login é obrigatório")
-    @Size(min = 11, max = 40)
+    @Size(min = 11, max = 40, message = "Login deve ter no minimo 11 caracteres e no maximo 40")
     @Column(nullable = false, unique = true, length = 40)
     private String login;
 
@@ -41,6 +42,7 @@ public class Usuario {
     private String email;
 
     @Enumerated(EnumType.STRING)
+    @NotNull(message = "Perfil deve ser selecionado")
     @Column(name = "perfil", length = 10)
     private Perfil perfil;
 
