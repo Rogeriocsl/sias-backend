@@ -1,8 +1,9 @@
 package br.com.sias.api.controller;
 
+import br.com.sias.api.dto.PacienteRequest;
+import br.com.sias.api.dto.PacienteResponse;
 import br.com.sias.api.model.Paciente;
-import br.com.sias.api.repository.PacienteRepository;
-import jakarta.validation.Valid;
+import br.com.sias.api.service.PacienteService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,51 +17,36 @@ import java.util.List;
 public class PacienteController {
 
     @Autowired
-    private PacienteRepository repository;
+    private PacienteService service;
 
     // 1. CADASTRAR UM NOVO PACIENTE
     @PostMapping
-    public ResponseEntity<Paciente> criar(@Valid @RequestBody Paciente paciente) {
-        Paciente salvo = repository.save(paciente);
-        return ResponseEntity.status(HttpStatus.CREATED).body(salvo);
+    public ResponseEntity<PacienteResponse> criar(@RequestBody PacienteRequest dto) {
+        return ResponseEntity.status(HttpStatus.CREATED).body(service.criar(dto));
     }
 
     // 2. LISTAR TODOS OS PACIENTES
     @GetMapping
     public List<Paciente> listar() {
-        return repository.findAll();
+        return service.listar();
     }
 
     // 3. BUSCAR UM PACIENTE POR ID
     @GetMapping("/{id}")
-    public ResponseEntity<Paciente> buscarPorId(@PathVariable Long id) {
-        return repository.findById(id)
-                .map(ResponseEntity::ok)
-                .orElse(ResponseEntity.notFound().build());
+    public ResponseEntity<PacienteResponse> buscarPorId(@PathVariable Long id) {
+        return ResponseEntity.ok(service.buscarPorId(id));
     }
 
     // 4. ATUALIZAR UM PACIENTE
     @PutMapping("/{id}")
-    public ResponseEntity<Paciente> atualizar(@PathVariable Long id, @Valid @RequestBody Paciente dados) {
-        return repository.findById(id)
-                .map(paciente -> {
-                    paciente.setNome(dados.getNome());
-                    paciente.setTelefone(dados.getTelefone());
-                    paciente.setGenero(dados.getGenero());
-                    paciente.setCondicoesSaude(dados.getCondicoesSaude());
-
-                    return ResponseEntity.ok(repository.save(paciente));
-                })
-                .orElse(ResponseEntity.notFound().build());
+    public ResponseEntity<PacienteResponse> atualizar(@PathVariable Long id, @RequestBody PacienteRequest dto) {
+        return ResponseEntity.ok(service.atualizar(id, dto));
     }
 
     // 5. DELETAR UM PACIENTE
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deletar(@PathVariable Long id) {
-        if (repository.existsById(id)) {
-            repository.deleteById(id);
-            return ResponseEntity.noContent().build();
-        }
-        return ResponseEntity.notFound().build();
+        service.deletar(id);
+        return ResponseEntity.noContent().build();
     }
 }
