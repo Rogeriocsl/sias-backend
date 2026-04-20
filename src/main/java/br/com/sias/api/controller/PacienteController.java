@@ -48,7 +48,7 @@ public class PacienteController {
                     paciente.setTelefone(dados.getTelefone());
                     paciente.setGenero(dados.getGenero());
                     paciente.setCondicoesSaude(dados.getCondicoesSaude());
-                    // CPF e Data de Nascimento geralmente não mudam, por isso não os incluímos aqui
+
                     return ResponseEntity.ok(repository.save(paciente));
                 })
                 .orElse(ResponseEntity.notFound().build());
