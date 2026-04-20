@@ -23,8 +23,6 @@ public class EncaminhamentoService {
     @Autowired
     private PacienteRepository pacienteRepository;
 
-
-
     private EncaminhamentoResponse converterParaResponse(Encaminhamento encaminhamento){
         EncaminhamentoResponse response = new EncaminhamentoResponse();
         response.setId(encaminhamento.getId());
@@ -55,13 +53,34 @@ public class EncaminhamentoService {
         return converterParaResponse(salvo);
     }
 
-
     public List<Encaminhamento> listar(){
         return repository.findAll();
     }
 
+    public EncaminhamentoResponse atualizar(Long id, EncaminhamentoRequest dto){
+        Encaminhamento encaminhamento = repository.findById(id).orElseThrow(() -> new RuntimeException("Encaminhamento não encontrado"));
+        Paciente paciente = pacienteRepository.findById(dto.getPacienteId()).orElseThrow(() -> new RuntimeException("Paciente não encontrado"));
+
+        encaminhamento.setPaciente(paciente);
+        encaminhamento.setMotivo(EncaminhamentoMotivo.valueOf(dto.getMotivo()));
+        encaminhamento.setDataEncaminhamento(dto.getDataEncaminhamento());
+        encaminhamento.setStatus(EncaminhamentoStatus.PENDENTE);
+        encaminhamento.setObservacoes(dto.getObservacoes());
+
+        Encaminhamento atualizado = repository.save(encaminhamento);
+        return converterParaResponse(atualizado);
+    }
+
+    public List<EncaminhamentoResponse> buscarEncaminhamento(Long pacienteId) {
+        return repository.findByPacienteIdOrderByDataEncaminhamentoDesc(pacienteId).stream().map(this::converterParaResponse).toList();
+    }
+
+    public List<EncaminhamentoResponse> listarEncaminhamentos(EncaminhamentoStatus status){
+        return repository.findByStatus(status).stream().map(this::converterParaResponse).toList();
+    }
+
     public void deletar(Long id){
-        if(repository.existsById(id)){
+        if(!repository.existsById(id)){
             throw new RuntimeException("Encaminhamento não encontrado");
             }
         repository.deleteById(id);
