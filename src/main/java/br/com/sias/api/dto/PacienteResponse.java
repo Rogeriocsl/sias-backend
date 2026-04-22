@@ -3,7 +3,6 @@ package br.com.sias.api.dto;
 import br.com.sias.api.model.enums.Genero;
 import br.com.sias.api.model.enums.TipoSanguineo;
 import lombok.*;
-
 import java.time.LocalDate;
 import java.util.List;
 

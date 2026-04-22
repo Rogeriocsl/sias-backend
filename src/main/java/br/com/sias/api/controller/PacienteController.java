@@ -19,30 +19,25 @@ public class PacienteController {
     @Autowired
     private PacienteService service;
 
-
     @PostMapping
     public ResponseEntity<PacienteResponse> criar(@RequestBody PacienteRequest dto) {
         return ResponseEntity.status(HttpStatus.CREATED).body(service.criar(dto));
     }
-
 
     @GetMapping
     public List<Paciente> listar() {
         return service.listar();
     }
 
-
     @GetMapping("/{id}")
     public ResponseEntity<PacienteResponse> buscarPorId(@PathVariable Long id) {
         return ResponseEntity.ok(service.BuscarComHistorico(id));
     }
 
-
     @PutMapping("/{id}")
     public ResponseEntity<PacienteResponse> atualizar(@PathVariable Long id, @RequestBody PacienteRequest dto) {
         return ResponseEntity.ok(service.atualizar(id, dto));
     }
-
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deletar(@PathVariable Long id) {
