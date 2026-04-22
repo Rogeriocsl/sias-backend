@@ -26,6 +26,7 @@ public class AvaliacaoFisicaService {
     }
 
     public AvaliacaoFisicaResponse atualizar(Long id, AvaliacaoFisicaRequest dto) {
+
         AvaliacaoFisica existente = repository.findById(id).orElseThrow(() -> new RuntimeException("Avaliação não encontrada"));
         Paciente paciente = pacienteRepository.findById(dto.getPacienteId()).orElseThrow(() -> new RuntimeException("Paciente não encontrado"));
 
@@ -72,18 +73,18 @@ public class AvaliacaoFisicaService {
         return avaliacao;
     }
 
-    private AvaliacaoFisicaResponse converterParaResponseAvaliacao(AvaliacaoFisica a) {
-        AvaliacaoFisicaResponse r = new AvaliacaoFisicaResponse();
-        r.setId(a.getId());
-        r.setPacienteId(a.getPaciente().getId());
-        r.setDataAvaliacao(a.getDataAvaliacao());
-        r.setPeso(a.getPeso());
-        r.setAltura(a.getAltura());
-        r.setImc(a.getImc());
-        r.setPressaoArterial(a.getPressaoArterial());
-        r.setFrequenciaCardiaca(a.getFrequenciaCardiaca());
-        r.setCircunferenciaAbdominal(a.getCircunferenciaAbdominal());
-        r.setObservacoes(a.getObservacoes());
-        return r;
+    private AvaliacaoFisicaResponse converterParaResponseAvaliacao(AvaliacaoFisica avaliacao) {
+        AvaliacaoFisicaResponse response = new AvaliacaoFisicaResponse();
+        response.setId(avaliacao.getId());
+        response.setPacienteId(avaliacao.getPaciente().getId());
+        response.setDataAvaliacao(avaliacao.getDataAvaliacao());
+        response.setPeso(avaliacao.getPeso());
+        response.setAltura(avaliacao.getAltura());
+        response.setImc(avaliacao.getImc());
+        response.setPressaoArterial(avaliacao.getPressaoArterial());
+        response.setFrequenciaCardiaca(avaliacao.getFrequenciaCardiaca());
+        response.setCircunferenciaAbdominal(avaliacao.getCircunferenciaAbdominal());
+        response.setObservacoes(avaliacao.getObservacoes());
+        return response;
     }
 }
