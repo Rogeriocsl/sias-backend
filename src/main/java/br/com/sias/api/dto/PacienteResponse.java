@@ -18,4 +18,6 @@ public class PacienteResponse {
     private Genero genero;
     private TipoSanguineo tipoSanguineo;
     private List<String> condicoesSaude;
+    private List<EncaminhamentoResponse> encaminhamentos;
+    private List<AvaliacaoFisicaResponse> avaliacoes;
 }

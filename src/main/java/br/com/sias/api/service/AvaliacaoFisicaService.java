@@ -22,7 +22,7 @@ public class AvaliacaoFisicaService {
     public AvaliacaoFisicaResponse criar(AvaliacaoFisicaRequest dto) {
         AvaliacaoFisica avaliacao = converterParaEntity(dto);
         AvaliacaoFisica salvo = repository.save(avaliacao);
-        return converterParaResponse(salvo);
+        return converterParaResponseAvaliacao(salvo);
     }
 
     public AvaliacaoFisicaResponse atualizar(Long id, AvaliacaoFisicaRequest dto) {
@@ -39,7 +39,7 @@ public class AvaliacaoFisicaService {
 
         AvaliacaoFisica atualizado = repository.save(existente);
 
-        return converterParaResponse(atualizado);
+        return converterParaResponseAvaliacao(atualizado);
     }
 
     public List<AvaliacaoFisica> listar() {
@@ -54,7 +54,7 @@ public class AvaliacaoFisicaService {
     }
 
     public List<AvaliacaoFisicaResponse> buscarPorPaciente(Long pacienteId) {
-        return repository.findByPacienteIdOrderByDataAvaliacaoDesc(pacienteId).stream().map(this::converterParaResponse).toList();
+        return repository.findByPacienteIdOrderByDataAvaliacaoDesc(pacienteId).stream().map(this::converterParaResponseAvaliacao).toList();
     }
 
     private AvaliacaoFisica converterParaEntity(AvaliacaoFisicaRequest dto) {
@@ -72,20 +72,18 @@ public class AvaliacaoFisicaService {
         return avaliacao;
     }
 
-    private AvaliacaoFisicaResponse converterParaResponse(AvaliacaoFisica avaliacao) {
-        AvaliacaoFisicaResponse resp = new AvaliacaoFisicaResponse();
-
-        resp.setId(avaliacao.getId());
-        resp.setPacienteId(avaliacao.getPaciente().getId());
-        resp.setDataAvaliacao(avaliacao.getDataAvaliacao());
-        resp.setPeso(avaliacao.getPeso());
-        resp.setAltura(avaliacao.getAltura());
-        resp.setImc(avaliacao.getImc());
-        resp.setPressaoArterial(avaliacao.getPressaoArterial());
-        resp.setFrequenciaCardiaca(avaliacao.getFrequenciaCardiaca());
-        resp.setCircunferenciaAbdominal(avaliacao.getCircunferenciaAbdominal());
-        resp.setObservacoes(avaliacao.getObservacoes());
-
-        return resp;
+    private AvaliacaoFisicaResponse converterParaResponseAvaliacao(AvaliacaoFisica a) {
+        AvaliacaoFisicaResponse r = new AvaliacaoFisicaResponse();
+        r.setId(a.getId());
+        r.setPacienteId(a.getPaciente().getId());
+        r.setDataAvaliacao(a.getDataAvaliacao());
+        r.setPeso(a.getPeso());
+        r.setAltura(a.getAltura());
+        r.setImc(a.getImc());
+        r.setPressaoArterial(a.getPressaoArterial());
+        r.setFrequenciaCardiaca(a.getFrequenciaCardiaca());
+        r.setCircunferenciaAbdominal(a.getCircunferenciaAbdominal());
+        r.setObservacoes(a.getObservacoes());
+        return r;
     }
 }
