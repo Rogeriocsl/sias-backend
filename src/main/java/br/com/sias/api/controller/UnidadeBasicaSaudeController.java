@@ -12,8 +12,8 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping
-@CrossOrigin
+@RequestMapping("/api/unidade")
+@CrossOrigin(origins = "*")
 public class UnidadeBasicaSaudeController {
     @Autowired
     private UnidadeBasicaSaudeService service;
