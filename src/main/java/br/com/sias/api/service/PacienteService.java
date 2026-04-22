@@ -31,6 +31,7 @@ public class PacienteService {
         existente.setGenero(dto.getGenero());
         existente.setTipoSanguineo(dto.getTipoSanguineo());
         existente.setCondicoesSaude(dto.getCondicoesSaude());
+        existente.setUnidadeOrigem(dto.getUnidadeOrigem());
 
         Paciente atualizado = repository.save(existente);
 
@@ -63,6 +64,7 @@ public class PacienteService {
         paciente.setGenero(dto.getGenero());
         paciente.setTipoSanguineo(dto.getTipoSanguineo());
         paciente.setCondicoesSaude(dto.getCondicoesSaude());
+        paciente.setUnidadeOrigem(dto.getUnidadeOrigem());
 
         return paciente;
     }
@@ -78,6 +80,7 @@ public class PacienteService {
         resp.setGenero(paciente.getGenero());
         resp.setTipoSanguineo(paciente.getTipoSanguineo());
         resp.setCondicoesSaude(paciente.getCondicoesSaude());
+        resp.setUnidadeOrigem(paciente.getUnidadeOrigem());
 
         return resp;
     }

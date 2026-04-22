@@ -1,5 +1,6 @@
 package br.com.sias.api.dto;
 
+import br.com.sias.api.model.UnidadeBasicaSaude;
 import br.com.sias.api.model.enums.Genero;
 import br.com.sias.api.model.enums.TipoSanguineo;
 import lombok.*;
@@ -17,4 +18,5 @@ public class PacienteRequest {
     private Genero genero;
     private TipoSanguineo tipoSanguineo;
     private List<String> condicoesSaude;
+    private UnidadeBasicaSaude unidadeOrigem;
 }

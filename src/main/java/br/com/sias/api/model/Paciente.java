@@ -1,4 +1,5 @@
 package br.com.sias.api.model;
+
 import br.com.sias.api.model.enums.Genero;
 import br.com.sias.api.model.enums.TipoSanguineo;
 import jakarta.persistence.*;
@@ -51,4 +52,9 @@ public class Paciente {
     @CollectionTable(name = "paciente_condicoes", joinColumns = @JoinColumn(name = "paciente_id"))
     @Column(name = "condicao")
     private List<String> condicoesSaude;
+
+    @NotNull(message = "O paciente deve estar vinculado a uma Unidadade Básica de Saúde")
+    @ManyToOne(optional = false)
+    @JoinColumn(name = "unidade origem id", nullable = false)
+    private UnidadeBasicaSaude unidadeOrigem;
 }
