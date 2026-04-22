@@ -1,5 +1,6 @@
 package br.com.sias.api.dto;
 
+import br.com.sias.api.model.enums.DoencaCronica;
 import br.com.sias.api.model.enums.Genero;
 import br.com.sias.api.model.enums.TipoSanguineo;
 import lombok.*;
@@ -16,5 +17,5 @@ public class PacienteRequest {
     private String telefone;
     private Genero genero;
     private TipoSanguineo tipoSanguineo;
-    private List<String> condicoesSaude;
+    private List<DoencaCronica> condicoesSaude;
 }
