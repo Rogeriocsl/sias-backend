@@ -4,7 +4,9 @@ import br.com.sias.api.dto.PacienteRequest;
 import br.com.sias.api.dto.PacienteResponse;
 import br.com.sias.api.exception.NotFoundException;
 import br.com.sias.api.model.Paciente;
+import br.com.sias.api.model.UnidadeBasicaSaude;
 import br.com.sias.api.repository.PacienteRepository;
+import br.com.sias.api.repository.UnidadeBasicaSaudeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -15,6 +17,9 @@ public class PacienteService {
     @Autowired
     private PacienteRepository repository;
 
+    @Autowired
+    private UnidadeBasicaSaudeRepository unidadeRepository;
+
     public PacienteResponse criar(PacienteRequest dto) {
         Paciente paciente = converterParaEntity(dto);
         Paciente salvo = repository.save(paciente);
@@ -23,6 +28,7 @@ public class PacienteService {
 
     public PacienteResponse atualizar(Long id, PacienteRequest dto) {
         Paciente existente = repository.findById(id).orElseThrow(() -> new NotFoundException("Paciente não encontrado"));
+        UnidadeBasicaSaude ubs = unidadeRepository.findById(dto.getUnidadeId()).orElseThrow(() -> new NotFoundException("Unidade Básica de Saúde não encontrada"));
 
         existente.setNome(dto.getNome());
         existente.setCpf(dto.getCpf());
@@ -31,7 +37,7 @@ public class PacienteService {
         existente.setGenero(dto.getGenero());
         existente.setTipoSanguineo(dto.getTipoSanguineo());
         existente.setCondicoesSaude(dto.getCondicoesSaude());
-        existente.setUnidadeOrigem(dto.getUnidadeOrigem());
+        existente.setUnidadeOrigem(ubs);
 
         Paciente atualizado = repository.save(existente);
 
@@ -56,6 +62,7 @@ public class PacienteService {
 
     private Paciente converterParaEntity(PacienteRequest dto) {
         Paciente paciente = new Paciente();
+        UnidadeBasicaSaude ubs = unidadeRepository.findById(dto.getUnidadeId()).orElseThrow(() -> new NotFoundException("Unidade Básica de Saúde não encontrada"));
 
         paciente.setNome(dto.getNome());
         paciente.setCpf(dto.getCpf());
@@ -64,7 +71,7 @@ public class PacienteService {
         paciente.setGenero(dto.getGenero());
         paciente.setTipoSanguineo(dto.getTipoSanguineo());
         paciente.setCondicoesSaude(dto.getCondicoesSaude());
-        paciente.setUnidadeOrigem(dto.getUnidadeOrigem());
+        paciente.setUnidadeOrigem(ubs);
 
         return paciente;
     }
@@ -80,7 +87,7 @@ public class PacienteService {
         resp.setGenero(paciente.getGenero());
         resp.setTipoSanguineo(paciente.getTipoSanguineo());
         resp.setCondicoesSaude(paciente.getCondicoesSaude());
-        resp.setUnidadeOrigem(paciente.getUnidadeOrigem());
+        resp.setUnidadeId(paciente.getUnidadeOrigem().getId());
 
         return resp;
     }
