@@ -3,7 +3,6 @@ package br.com.sias.api.dto;
 import br.com.sias.api.model.enums.Genero;
 import br.com.sias.api.model.enums.TipoSanguineo;
 import lombok.*;
-
 import java.time.LocalDate;
 import java.util.List;
 
@@ -19,4 +18,6 @@ public class PacienteResponse {
     private TipoSanguineo tipoSanguineo;
     private List<String> condicoesSaude;
     private Long unidadeId;
+    private List<EncaminhamentoResponse> encaminhamentos;
+    private List<AvaliacaoFisicaResponse> avaliacoes;
 }
