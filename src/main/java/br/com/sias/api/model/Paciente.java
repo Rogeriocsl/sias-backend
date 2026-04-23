@@ -54,4 +54,8 @@ public class Paciente {
     @Column(name = "condicao")
     private List<DoencaCronica> condicoesSaude;
 
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "endereco_id")
+    private Endereco endereco;
+
 }
