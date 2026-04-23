@@ -57,6 +57,6 @@ public class Paciente {
 
     @NotNull(message = "O paciente deve estar vinculado a uma Unidadade Básica de Saúde")
     @ManyToOne(optional = false)
-    @JoinColumn(name = "unidade origem id", nullable = false)
+    @JoinColumn(name = "unidade_origem_id", nullable = false)
     private UnidadeBasicaSaude unidadeOrigem;
 }

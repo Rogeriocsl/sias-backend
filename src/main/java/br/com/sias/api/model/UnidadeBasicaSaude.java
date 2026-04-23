@@ -7,7 +7,7 @@ import jakarta.validation.constraints.Size;
 import lombok.*;
 
 @Entity
-@Table(name = "unidade basica saude")
+@Table(name = "unidade_basica_saude")
 @Getter
 @Setter
 @NoArgsConstructor
