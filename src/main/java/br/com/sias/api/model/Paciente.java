@@ -59,4 +59,8 @@ public class Paciente {
     @ManyToOne(optional = false)
     @JoinColumn(name = "unidade_origem_id", nullable = false)
     private UnidadeBasicaSaude unidadeOrigem;
+
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "endereco_id")
+    private Endereco endereco;
 }
