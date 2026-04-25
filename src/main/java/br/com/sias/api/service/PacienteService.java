@@ -47,6 +47,7 @@ public class PacienteService {
         pacienteResponse.setTelefone(paciente.getTelefone());
         pacienteResponse.setGenero(paciente.getGenero());
         pacienteResponse.setTipoSanguineo(paciente.getTipoSanguineo());
+        pacienteResponse.setUnidadeId(paciente.getUnidadeOrigem().getId());
         pacienteResponse.setCondicoesSaude(
                 paciente.getCondicoesSaude().stream()
                         .map(Enum::name)
