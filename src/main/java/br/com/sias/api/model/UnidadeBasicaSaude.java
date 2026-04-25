@@ -21,7 +21,7 @@ public class UnidadeBasicaSaude {
 
     @NotBlank(message = "O nome da Unidade de Saúde é obrigatóro")
     @Size(min = 3, max = 150)
-    @Column(nullable = false, length = 150)
+    @Column(nullable = false, length = 150, unique = true)
     private String nomeUnidade;
 
     @NotBlank(message = "O endereço é obrigatório")

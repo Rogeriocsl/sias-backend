@@ -6,6 +6,7 @@ import br.com.sias.api.exception.NotFoundException;
 import br.com.sias.api.model.UnidadeBasicaSaude;
 import br.com.sias.api.repository.UnidadeBasicaSaudeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -16,9 +17,18 @@ public class UnidadeBasicaSaudeService {
     private UnidadeBasicaSaudeRepository repository;
 
     public UnidadeBasicaSaudeResponse criar(UnidadeBasicaSaudeRequest dto) {
+        if (repository.existsByNomeUnidadeIgnoreCase(dto.getNomeUnidade())) {
+            throw new RuntimeException("Já existe uma Unidade Básica de Saúde com esse nome");
+        }
+
         UnidadeBasicaSaude ubs = converterParaEntity(dto);
-        UnidadeBasicaSaude salvo = repository.save(ubs);
-        return converterParaResponse(salvo);
+
+        try {
+            UnidadeBasicaSaude salvo = repository.save(ubs);
+            return converterParaResponse(salvo);
+        } catch (DataIntegrityViolationException ex) {
+            throw new RuntimeException("Já existe uma Unidade Básica de Saúde com esse nome");
+        }
     }
 
     public UnidadeBasicaSaudeResponse atualizar(Long id, UnidadeBasicaSaudeRequest dto) {
