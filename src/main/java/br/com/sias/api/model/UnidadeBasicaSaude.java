@@ -20,7 +20,7 @@ public class UnidadeBasicaSaude {
     private Long id;
 
     @NotBlank(message = "O nome da Unidade de Saúde é obrigatóro")
-    @Size(min = 3, max = 150)
+    @Size(min = 3, max = 150, message = "O nome deve ter entre 3 à 150 caractéres")
     @Column(nullable = false, length = 150, unique = true)
     private String nomeUnidade;
 
@@ -37,7 +37,7 @@ public class UnidadeBasicaSaude {
     private Integer numero;
 
     @NotBlank(message = "O nome do Enfermeiro Responsável é obrigatóro")
-    @Size(min = 3, max = 150)
+    @Size(min = 3, max = 150, message = "O nome do enfermeiro deve ter entre 3 à 150 caractéres")
     @Column(nullable = false, length = 150)
     private String nomeEnfermeiroResponsavel;
 }
