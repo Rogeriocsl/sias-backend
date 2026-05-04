@@ -17,6 +17,7 @@ public class PacienteResponse {
     private Genero genero;
     private TipoSanguineo tipoSanguineo;
     private List<String> condicoesSaude;
+    private Long unidadeId;
     private List<EncaminhamentoResponse> encaminhamentos;
     private List<AvaliacaoFisicaResponse> avaliacoes;
 }

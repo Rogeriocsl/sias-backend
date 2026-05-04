@@ -16,6 +16,7 @@ public class PacienteRequest {
     private LocalDate dataNascimento;
     private String telefone;
     private Genero genero;
-    private TipoSanguineo tipoSanguineo;
+    private TipoSanguineo tipoSanguineo;;
+    private Long unidadeId;
     private List<DoencaCronica> condicoesSaude;
 }
