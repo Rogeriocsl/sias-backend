@@ -1,4 +1,5 @@
 package br.com.sias.api.model;
+
 import br.com.sias.api.model.enums.DoencaCronica;
 import br.com.sias.api.model.enums.Genero;
 import br.com.sias.api.model.enums.TipoSanguineo;
@@ -54,8 +55,12 @@ public class Paciente {
     @Column(name = "condicao")
     private List<DoencaCronica> condicoesSaude;
 
+    @NotNull(message = "O paciente deve estar vinculado a uma Unidadade Básica de Saúde")
+    @ManyToOne(optional = false)
+    @JoinColumn(name = "unidade_origem_id", nullable = false)
+    private UnidadeBasicaSaude unidadeOrigem;
+
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "endereco_id")
     private Endereco endereco;
-
 }
