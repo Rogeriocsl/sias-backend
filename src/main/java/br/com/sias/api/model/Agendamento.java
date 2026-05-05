@@ -22,10 +22,6 @@ public class Agendamento {
     @JoinColumn(name = "instrutor_id", nullable = false)
     private Usuario instrutor;
 
-    @ManyToOne
-    @JoinColumn(name = "instrutor_id", nullable = false)
-    private Usuario instrutor;
-
     @Column(nullable = false)
     private LocalDateTime dataHora;
 
