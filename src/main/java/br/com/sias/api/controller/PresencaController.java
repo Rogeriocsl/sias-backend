@@ -44,8 +44,16 @@ public class PresencaController {
         return ResponseEntity.noContent().build();
     }
 
-    @GetMapping("/paciente/{pacienteId}")
+    @GetMapping("/{id}")
     public ResponseEntity<PresencaResponse> buscarPorId(@PathVariable Long id) {
         return ResponseEntity.ok(service.buscarPorId(id));
+    }
+    @GetMapping("/hoje")
+    public List<Presenca> PresencaDoDiaAtual(){
+        return service.PresencaDoDiaAtual();
+    }
+    @GetMapping("/paciente/{id}")
+    public List<Presenca> historicoPresencaParciente(@PathVariable Long id){
+        return service.historicoPresencaParciente(id);
     }
 }

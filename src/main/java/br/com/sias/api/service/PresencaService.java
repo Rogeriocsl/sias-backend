@@ -1,18 +1,17 @@
 package br.com.sias.api.service;
 
-import br.com.sias.api.dto.AvaliacaoFisicaRequest;
 import br.com.sias.api.dto.PresencaRequest;
 import br.com.sias.api.dto.PresencaResponse;
 import br.com.sias.api.exception.NotFoundException;
 import br.com.sias.api.model.Presenca;
 import br.com.sias.api.model.Paciente;
-import br.com.sias.api.model.Presenca;
 import br.com.sias.api.repository.PresencaRepository;
 import br.com.sias.api.repository.PacienteRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.List;
 
 @Service
@@ -24,6 +23,9 @@ public class PresencaService {
     private PacienteRepository pacienteRepository;
 
     public PresencaResponse criar(PresencaRequest dto) {
+        if (repository.existsByPacienteIdAndDataPresenca(dto.getPacienteId(),dto.getDataPresenca())){
+            throw new RuntimeException("O paciente já tem uma presença registrada nesta data");
+        }
         Presenca presenca = converterParaEntity(dto);
         Presenca salvo = repository.save(presenca);
         return converterParaResponse(salvo);
@@ -56,8 +58,16 @@ public class PresencaService {
     }
 
     public PresencaResponse buscarPorId(Long id) {
-        Presenca presenca = repository.findById(id).orElseThrow(() -> new NotFoundException("Paciente não encontrado"));
+        Presenca presenca = repository.findById(id).orElseThrow(() -> new NotFoundException("Presença não encontrado"));
         return converterParaResponse(presenca);
+    }
+
+    public List<Presenca> PresencaDoDiaAtual(){
+        LocalDate hoje = LocalDate.now(ZoneId.of("America/Sao_Paulo"));
+        return repository.findByDataPresenca(hoje);
+    }
+    public List<Presenca> historicoPresencaParciente(Long parcienteId){
+        return repository.findByPacienteIdOrderByDataPresencaDesc(parcienteId);
     }
 
     private Presenca converterParaEntity(PresencaRequest dto) {
