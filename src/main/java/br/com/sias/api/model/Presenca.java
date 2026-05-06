@@ -22,7 +22,7 @@ public class Presenca {
     @JoinColumn(name = "paciente_id", nullable = false)
     private Paciente paciente;
 
-    @Column(name = "data_presenca", nullable = false)
+    @Column(name = "data_presenca")
     private LocalDate dataPresenca;
 
     @Enumerated(EnumType.STRING)

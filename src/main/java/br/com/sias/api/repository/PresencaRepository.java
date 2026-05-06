@@ -11,4 +11,8 @@ public interface PresencaRepository extends JpaRepository<Presenca, Long> {
     List<Presenca> findByPacienteId(Long pacienteId);
     List<Presenca> findByDataPresenca(LocalDate data);
     boolean existsByPacienteIdAndDataPresenca(Long pacienteId, LocalDate data);
+    List<Presenca> findByPacienteIdOrderByDataPresencaDesc(Long pacienteId);
+
 }
+
+
