@@ -32,7 +32,6 @@ public class PresencaService {
     }
 
     public PresencaResponse atualizar(Long id, PresencaRequest dto) {
-
         Presenca existente = repository.findById(id).orElseThrow(() -> new RuntimeException("Presença não registrada"));
         Paciente pacienteId = pacienteRepository.findById(dto.getPacienteId()).orElseThrow(() -> new RuntimeException("Paciente não encontrado"));
 
