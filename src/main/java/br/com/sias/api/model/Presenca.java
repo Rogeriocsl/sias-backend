@@ -1,5 +1,6 @@
 package br.com.sias.api.model;
 
+import br.com.sias.api.model.enums.AtividadeFisica;
 import br.com.sias.api.model.enums.StatusPresenca;
 import jakarta.persistence.*;
 import lombok.*; // Importa todas as anotações do Lombok
@@ -33,4 +34,7 @@ public class Presenca {
     @Column(name = "observacao")
     private String observacao;
 
+    @Enumerated(EnumType.STRING)
+    @Column(name = "atividade")
+    private AtividadeFisica atividade;
 }
