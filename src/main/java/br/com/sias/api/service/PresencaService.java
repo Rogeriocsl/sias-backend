@@ -23,6 +23,10 @@ public class PresencaService {
     private PacienteRepository pacienteRepository;
 
     public PresencaResponse criar(PresencaRequest dto) {
+        if (dto.getAtividade() == null) {
+            throw new NotFoundException("A atividade física deve ser vinculada");
+        }
+
         if (repository.existsByPacienteIdAndDataPresenca(dto.getPacienteId(),dto.getDataPresenca())){
             throw new RuntimeException("O paciente já tem uma presença registrada nesta data");
         }
