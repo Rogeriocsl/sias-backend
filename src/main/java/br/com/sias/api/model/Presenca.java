@@ -3,6 +3,7 @@ package br.com.sias.api.model;
 import br.com.sias.api.model.enums.AtividadeFisica;
 import br.com.sias.api.model.enums.StatusPresenca;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 import lombok.*; // Importa todas as anotações do Lombok
 import java.time.LocalDate;
 
