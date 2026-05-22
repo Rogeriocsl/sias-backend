@@ -23,6 +23,10 @@ public class PresencaService {
     private PacienteRepository pacienteRepository;
 
     public PresencaResponse criar(PresencaRequest dto) {
+        if (dto.getAtividade() == null) {
+            throw new NotFoundException("A atividade física deve ser vinculada");
+        }
+
         if (repository.existsByPacienteIdAndDataPresenca(dto.getPacienteId(),dto.getDataPresenca())){
             throw new RuntimeException("O paciente já tem uma presença registrada nesta data");
         }
@@ -39,6 +43,7 @@ public class PresencaService {
         existente.setDataPresenca(dto.getDataPresenca());
         existente.setStatus(dto.getStatus());
         existente.setObservacao(dto.getObservacao());
+        existente.setAtividade(dto.getAtividade());
 
         Presenca presenca = repository.save(existente);
 
@@ -65,6 +70,7 @@ public class PresencaService {
         LocalDate hoje = LocalDate.now(ZoneId.of("America/Sao_Paulo"));
         return repository.findByDataPresenca(hoje);
     }
+
     public List<Presenca> historicoPresencaParciente(Long parcienteId){
         return repository.findByPacienteIdOrderByDataPresencaDesc(parcienteId);
     }
@@ -77,16 +83,21 @@ public class PresencaService {
         presenca.setDataPresenca(dto.getDataPresenca());
         presenca.setStatus(dto.getStatus());
         presenca.setObservacao(dto.getObservacao());
+        presenca.setAtividade(dto.getAtividade());
+
         return presenca;
     }
 
     private PresencaResponse converterParaResponse(Presenca presenca) {
         PresencaResponse response = new PresencaResponse();
+
         response.setPacienteId(presenca.getPaciente().getId());
         response.setId(presenca.getId());
         response.setDataPresenca(presenca.getDataPresenca());
         response.setStatus(presenca.getStatus());
         response.setObservacao(presenca.getObservacao());
+        response.setAtividade(presenca.getAtividade());
+
         return response;
     }
 }
