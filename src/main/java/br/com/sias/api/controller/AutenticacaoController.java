@@ -28,7 +28,8 @@ public class AutenticacaoController {
         return ResponseEntity.ok(new LoginResponse(
                 token,
                 usuario.getLogin(),
-                usuario.getPerfil()
+                usuario.getPerfil(),
+                usuario.getNome()
         ));
     }
 }
