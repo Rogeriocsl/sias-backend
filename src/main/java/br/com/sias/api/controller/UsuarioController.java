@@ -1,6 +1,7 @@
 package br.com.sias.api.controller;
 
 import br.com.sias.api.dto.UsuarioResponse;
+import br.com.sias.api.dto.UsuarioRequest;
 import br.com.sias.api.model.Usuario;
 import br.com.sias.api.service.UsuarioService;
 import jakarta.validation.Valid;
@@ -22,12 +23,12 @@ public class UsuarioController {
     }
 
     @PostMapping
-    public ResponseEntity<UsuarioResponse> cadastrar(@Valid @RequestBody Usuario usuario) {
-        return ResponseEntity.status(HttpStatus.CREATED).body(service.salvar(usuario));
+    public ResponseEntity<UsuarioResponse> cadastrar(@Valid @RequestBody UsuarioRequest dados) {
+        return ResponseEntity.status(HttpStatus.CREATED).body(service.salvar(dados));
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<UsuarioResponse> atualizar(@PathVariable Long id, @Valid @RequestBody Usuario dados) {
+    public ResponseEntity<UsuarioResponse> atualizar(@PathVariable Long id, @Valid @RequestBody UsuarioRequest dados) {
         return ResponseEntity.ok(service.atualizar(id, dados));
     }
 

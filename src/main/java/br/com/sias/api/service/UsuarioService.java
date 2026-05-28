@@ -1,5 +1,6 @@
 package br.com.sias.api.service;
 
+import br.com.sias.api.dto.UsuarioRequest;
 import br.com.sias.api.dto.UsuarioResponse;
 import br.com.sias.api.exception.NotFoundException;
 import br.com.sias.api.model.Usuario;
@@ -15,50 +16,74 @@ public class UsuarioService {
     private final PasswordEncoder passwordEncoder;
     private final UsuarioRepository repository;
 
-    public UsuarioService(PasswordEncoder passwordEncoder, UsuarioRepository repository) {
+    public UsuarioService(
+            PasswordEncoder passwordEncoder,
+            UsuarioRepository repository
+    ) {
         this.passwordEncoder = passwordEncoder;
         this.repository = repository;
     }
 
-
     private UsuarioResponse converterParaResponse(Usuario usuario) {
+
         UsuarioResponse response = new UsuarioResponse();
+
         response.setId(usuario.getId());
         response.setLogin(usuario.getLogin());
         response.setNome(usuario.getNome());
         response.setPerfil(usuario.getPerfil());
         response.setEmail(usuario.getEmail());
+
         return response;
     }
 
+    public UsuarioResponse salvar(UsuarioRequest dados) {
 
-    public UsuarioResponse salvar(Usuario usuario) {
-        if (repository.existsByEmail(usuario.getEmail())) {
+        if (repository.existsByEmail(dados.getEmail())) {
             throw new RuntimeException("Email já cadastrado");
         }
-        if (repository.existsByLogin(usuario.getLogin())) {
+
+        if (repository.existsByLogin(dados.getLogin())) {
             throw new RuntimeException("Login já cadastrado");
         }
-        if(usuario.getPerfil() == null || usuario.getPerfil().equals("")) {
+
+        if (dados.getPerfil() == null) {
             throw new RuntimeException("Perfil deve ser selecionado");
         }
 
-        if (usuario.getSenha() != null && !usuario.getSenha().startsWith("$2a$")) {
-            usuario.setSenha(passwordEncoder.encode(usuario.getSenha()));
-        }
+        Usuario usuario = new Usuario();
+
+        usuario.setNome(dados.getNome());
+        usuario.setLogin(dados.getLogin());
+        usuario.setEmail(dados.getEmail());
+        usuario.setPerfil(dados.getPerfil());
+
+        usuario.setSenha(
+                passwordEncoder.encode(dados.getSenha())
+        );
 
         Usuario salvo = repository.save(usuario);
+
         return converterParaResponse(salvo);
     }
 
-    public UsuarioResponse atualizar(Long id, Usuario dados){
+    public UsuarioResponse atualizar(Long id, UsuarioRequest dados) {
+
         Usuario usuario = repository.findById(id)
-                .orElseThrow(() -> new NotFoundException("Usuário não encontrado"));
+                .orElseThrow(() ->
+                        new NotFoundException("Usuário não encontrado"));
+
         usuario.setNome(dados.getNome());
         usuario.setEmail(dados.getEmail());
+        usuario.setLogin(dados.getLogin());
+        usuario.setPerfil(dados.getPerfil());
 
-        if(dados.getSenha() != null && !dados.getSenha().isBlank()){
-            usuario.setSenha(passwordEncoder.encode(dados.getSenha()));
+        if (dados.getSenha() != null &&
+                !dados.getSenha().isBlank()) {
+
+            usuario.setSenha(
+                    passwordEncoder.encode(dados.getSenha())
+            );
         }
 
         Usuario atualizado = repository.save(usuario);
@@ -67,13 +92,18 @@ public class UsuarioService {
     }
 
     public UsuarioResponse deletar(Long id) {
+
         Usuario usuario = repository.findById(id)
-                .orElseThrow(() -> new NotFoundException("Usuário não encontrado"));
+                .orElseThrow(() ->
+                        new NotFoundException("Usuário não encontrado"));
+
         repository.delete(usuario);
+
         return converterParaResponse(usuario);
     }
 
     public List<UsuarioResponse> listar() {
+
         return repository.findAll()
                 .stream()
                 .map(this::converterParaResponse)
@@ -81,8 +111,11 @@ public class UsuarioService {
     }
 
     public UsuarioResponse buscarPorId(Long id) {
-       Usuario usuario = repository.findById(id)
-               .orElseThrow(() -> new NotFoundException("Usuário não encontrado"));
-       return converterParaResponse(usuario);
+
+        Usuario usuario = repository.findById(id)
+                .orElseThrow(() ->
+                        new NotFoundException("Usuário não encontrado"));
+
+        return converterParaResponse(usuario);
     }
 }
