@@ -95,8 +95,12 @@ public class PacienteService {
         return converterParaResponse(atualizado);
     }
 
-    public List<Paciente> listar() {
-        return repository.findAll();
+    public List<PacienteResponse> listar() {
+        List<Paciente> pacientes = repository.findAll();
+
+        return pacientes.stream()
+                .map(this::converterParaResponse)
+                .toList();
     }
 
     public void deletar(Long id) {

@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import jakarta.validation.Valid;
 
 import java.util.List;
 
@@ -20,13 +21,13 @@ public class PacienteController {
     private PacienteService service;
 
     @PostMapping
-    public ResponseEntity<PacienteResponse> criar(@RequestBody PacienteRequest dto) {
+    public ResponseEntity<PacienteResponse> criar(@Valid @RequestBody PacienteRequest dto) {
         return ResponseEntity.status(HttpStatus.CREATED).body(service.criar(dto));
     }
 
     @GetMapping
-    public List<Paciente> listar() {
-        return service.listar();
+    public ResponseEntity<List<PacienteResponse>> listar() {
+        return ResponseEntity.ok(service.listar());
     }
 
     @GetMapping("/{id}")
@@ -35,7 +36,7 @@ public class PacienteController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<PacienteResponse> atualizar(@PathVariable Long id, @RequestBody PacienteRequest dto) {
+    public ResponseEntity<PacienteResponse> atualizar(@Valid @PathVariable Long id, @RequestBody PacienteRequest dto) {
         return ResponseEntity.ok(service.atualizar(id, dto));
     }
 

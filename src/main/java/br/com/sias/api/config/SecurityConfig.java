@@ -38,7 +38,9 @@ public class SecurityConfig {
                         .requestMatchers("/v3/api-docs/**").permitAll()
                         .requestMatchers(
                                 "/auth/**",
-                                "/api/usuarios/**"
+                                "/api/usuarios/**",
+                                "/api/unidade/**"
+
                         ).permitAll()
                         // qualquer outra rota exige autenticação
                         .anyRequest().authenticated()
