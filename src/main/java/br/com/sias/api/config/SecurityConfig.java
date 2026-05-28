@@ -39,7 +39,8 @@ public class SecurityConfig {
                         .requestMatchers(
                                 "/auth/**",
                                 "/api/usuarios/**",
-                                "/api/unidade/**"
+                                "/api/unidade/**",
+                                "/api/pacientes/**"
 
                         ).permitAll()
                         // qualquer outra rota exige autenticação

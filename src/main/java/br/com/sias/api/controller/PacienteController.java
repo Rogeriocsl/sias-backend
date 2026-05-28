@@ -20,6 +20,7 @@ public class PacienteController {
     @Autowired
     private PacienteService service;
 
+
     @PostMapping
     public ResponseEntity<PacienteResponse> criar(@Valid @RequestBody PacienteRequest dto) {
         return ResponseEntity.status(HttpStatus.CREATED).body(service.criar(dto));

@@ -21,7 +21,6 @@ public class JwtFilter extends OncePerRequestFilter {
     private final JwtService jwtService;
     private final UsuarioRepository usuarioRepository;
 
-    // ✅ MELHOR FORMA: define rotas que NÃO passam pelo filtro
     @Override
     protected boolean shouldNotFilter(HttpServletRequest request) {
         String path = request.getServletPath();
@@ -30,6 +29,7 @@ public class JwtFilter extends OncePerRequestFilter {
                 || path.startsWith("/api/usuarios")
                 || path.startsWith("/swagger-ui")
                 || path.startsWith("/api/unidade")
+                || path.startsWith("/api/pacientes")
                 || path.startsWith("/v3/api-docs");
 
     }
