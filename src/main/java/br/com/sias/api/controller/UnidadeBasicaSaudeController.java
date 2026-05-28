@@ -24,8 +24,22 @@ public class UnidadeBasicaSaudeController {
     }
 
     @GetMapping
-    public List<UnidadeBasicaSaude> listar() {
-        return service.listar();
+    public ResponseEntity<List<UnidadeBasicaSaudeResponse>> listar() {
+        List<UnidadeBasicaSaude> unidades = service.listar();
+        List<UnidadeBasicaSaudeResponse> dtos = unidades.stream()
+                .map(ubs -> {
+                    UnidadeBasicaSaudeResponse resp = new UnidadeBasicaSaudeResponse();
+                    resp.setId(ubs.getId());
+                    resp.setNomeUnidade(ubs.getNomeUnidade());
+                    resp.setEndereco(ubs.getEndereco());
+                    resp.setBairro(ubs.getBairro());
+                    resp.setNumero(ubs.getNumero());
+                    resp.setNomeEnfermeiroResponsavel(ubs.getNomeEnfermeiroResponsavel());
+                    return resp;
+                })
+                .toList();
+
+        return ResponseEntity.ok(dtos);
     }
 
     @GetMapping("/{id}")
