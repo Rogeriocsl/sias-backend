@@ -19,4 +19,5 @@ public class PacienteRequest {
     private TipoSanguineo tipoSanguineo;;
     private Long unidadeId;
     private List<DoencaCronica> condicoesSaude;
+    private Long turmaId;
 }

@@ -20,6 +20,5 @@ public class PacienteResponse {
     private Long unidadeId;
     private List<EncaminhamentoResponse> encaminhamentos;
     private List<AvaliacaoFisicaResponse> avaliacoes;
-
-
+    private Long turmaId;
 }

@@ -5,14 +5,8 @@ import br.com.sias.api.dto.EncaminhamentoResponse;
 import br.com.sias.api.dto.PacienteRequest;
 import br.com.sias.api.dto.PacienteResponse;
 import br.com.sias.api.exception.NotFoundException;
-import br.com.sias.api.model.AvaliacaoFisica;
-import br.com.sias.api.model.Encaminhamento;
-import br.com.sias.api.model.Paciente;
-import br.com.sias.api.model.UnidadeBasicaSaude;
-import br.com.sias.api.repository.AvaliacaoFisicaRepository;
-import br.com.sias.api.repository.EncaminhamentoRepository;
-import br.com.sias.api.repository.PacienteRepository;
-import br.com.sias.api.repository.UnidadeBasicaSaudeRepository;
+import br.com.sias.api.model.*;
+import br.com.sias.api.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -32,7 +26,7 @@ public class PacienteService {
     @Autowired
     private AvaliacaoFisicaRepository avaliacoesRepository;
 
-
+    private TurmasRepository turmasRepository;
 
     public PacienteResponse BuscarComHistorico(Long id) {
         Paciente paciente = repository.findById(id)
@@ -48,6 +42,7 @@ public class PacienteService {
         pacienteResponse.setGenero(paciente.getGenero());
         pacienteResponse.setTipoSanguineo(paciente.getTipoSanguineo());
         pacienteResponse.setUnidadeId(paciente.getUnidadeOrigem().getId());
+        pacienteResponse.setTurmaId(paciente.getTurmas().getId());
         pacienteResponse.setCondicoesSaude(
                 paciente.getCondicoesSaude().stream()
                         .map(Enum::name)
@@ -80,6 +75,7 @@ public class PacienteService {
     public PacienteResponse atualizar(Long id, PacienteRequest dto) {
         Paciente existente = repository.findById(id).orElseThrow(() -> new NotFoundException("Paciente não encontrado"));
         UnidadeBasicaSaude ubs = unidadeRepository.findById(dto.getUnidadeId()).orElseThrow(() -> new NotFoundException("Unidade Básica de Saúde não encontrada"));
+        Turmas turmas = turmasRepository.findById(dto.getTurmaId()).orElseThrow(() -> new NotFoundException("Turma não encontrada"));
 
         existente.setNome(dto.getNome());
         existente.setCpf(dto.getCpf());
@@ -89,6 +85,7 @@ public class PacienteService {
         existente.setTipoSanguineo(dto.getTipoSanguineo());
         existente.setCondicoesSaude(dto.getCondicoesSaude());
         existente.setUnidadeOrigem(ubs);
+        existente.setTurmas(turmas);
 
         Paciente atualizado = repository.save(existente);
 
@@ -118,6 +115,7 @@ public class PacienteService {
     private Paciente converterParaEntity(PacienteRequest dto) {
         Paciente paciente = new Paciente();
         UnidadeBasicaSaude ubs = unidadeRepository.findById(dto.getUnidadeId()).orElseThrow(() -> new NotFoundException("Unidade Básica de Saúde não encontrada"));
+        Turmas turmas = turmasRepository.findById(dto.getTurmaId()).orElseThrow(() -> new NotFoundException("Turma não encontrada"));
 
         paciente.setNome(dto.getNome());
         paciente.setCpf(dto.getCpf());
@@ -127,6 +125,7 @@ public class PacienteService {
         paciente.setTipoSanguineo(dto.getTipoSanguineo());
         paciente.setCondicoesSaude(dto.getCondicoesSaude());
         paciente.setUnidadeOrigem(ubs);
+        paciente.setTurmas(turmas);
 
         return paciente;
     }
@@ -142,6 +141,7 @@ public class PacienteService {
         resp.setGenero(paciente.getGenero());
         resp.setTipoSanguineo(paciente.getTipoSanguineo());
         resp.setUnidadeId(paciente.getUnidadeOrigem().getId());
+        resp.setTurmaId(paciente.getTurmas().getId());
         resp.setCondicoesSaude(
                 paciente.getCondicoesSaude().stream()
                         .map(Enum::name)
