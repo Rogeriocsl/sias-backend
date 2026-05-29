@@ -66,6 +66,7 @@ Para manter a organização, seguimos a estrutura:
 *   `src/main/java/br/com/sias/api/model`: Entidades JPA (Tabelas do banco).
 *   `src/main/java/br/com/sias/api/repository`: Interfaces de acesso a dados.
 *   `src/main/java/br/com/sias/api/service`: Regras de negócio e cálculos.
+*   `src/main/java/br/com/sias/api/dto`: Transferência de dados.
 
 ---
 
