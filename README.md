@@ -67,6 +67,8 @@ Para manter a organização, seguimos a estrutura:
 *   `src/main/java/br/com/sias/api/repository`: Interfaces de acesso a dados.
 *   `src/main/java/br/com/sias/api/service`: Regras de negócio e cálculos.
 *   `src/main/java/br/com/sias/api/dto`: Transferência de dados.
+*   `src/main/java/br/com/sias/api/exception`: Tratamento de exceções da aplicação.
+*   `src/main/java/br/com/sias/api/security`: Configurações e regras de segurança da aplicação. 
 
 ---
 
