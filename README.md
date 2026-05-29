@@ -20,7 +20,7 @@ Para rodar o projeto, você e o time de 6 colaboradores precisam ter instalado:
 
 1.  **Docker & Docker Compose** (V2 recomendado)
 2.  **Git**
-3.  **Postman ou Insomnia** (Para testar os endpoints da API)
+3.  **Swagger** (Para testar os endpoints da API)
 
 ---
 
