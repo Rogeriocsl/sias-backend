@@ -26,6 +26,7 @@ public class PacienteService {
     @Autowired
     private AvaliacaoFisicaRepository avaliacoesRepository;
 
+    @Autowired
     private TurmasRepository turmasRepository;
 
     public PacienteResponse BuscarComHistorico(Long id) {
