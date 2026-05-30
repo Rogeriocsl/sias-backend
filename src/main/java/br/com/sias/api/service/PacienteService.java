@@ -6,6 +6,8 @@ import br.com.sias.api.dto.PacienteRequest;
 import br.com.sias.api.dto.PacienteResponse;
 import br.com.sias.api.exception.NotFoundException;
 import br.com.sias.api.model.*;
+import br.com.sias.api.model.enums.EncaminhamentoMotivo;
+import br.com.sias.api.model.enums.EncaminhamentoStatus;
 import br.com.sias.api.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -88,6 +90,23 @@ public class PacienteService {
         existente.setUnidadeOrigem(ubs);
         existente.setTurmas(turmas);
 
+        if (dto.getEncaminhamentos() != null && !dto.getEncaminhamentos().isEmpty()) {
+            var eDto = dto.getEncaminhamentos().get(0);
+            Encaminhamento enc;
+            if (existente.getEncaminhamentos() != null && !existente.getEncaminhamentos().isEmpty()) {
+                enc = existente.getEncaminhamentos().get(existente.getEncaminhamentos().size() - 1);
+            } else {
+                enc = new Encaminhamento();
+                enc.setPaciente(existente);
+                existente.getEncaminhamentos().add(enc);
+            }
+
+            enc.setDataEncaminhamento(eDto.getDataEncaminhamento());
+            enc.setMotivo(br.com.sias.api.model.enums.EncaminhamentoMotivo.valueOf(eDto.getMotivo()));
+            enc.setStatus(eDto.getStatus());
+            enc.setObservacoes(eDto.getObservacoes());
+        }
+
         Paciente atualizado = repository.save(existente);
 
         return converterParaResponse(atualizado);
@@ -128,7 +147,22 @@ public class PacienteService {
         paciente.setUnidadeOrigem(ubs);
         paciente.setTurmas(turmas);
 
-        return paciente;
+        if (dto.getEncaminhamentos() != null && !dto.getEncaminhamentos().isEmpty()) {
+            List<Encaminhamento> listaEncaminhamentos = dto.getEncaminhamentos().stream().map(eDto -> {
+                Encaminhamento enc = new Encaminhamento();
+                enc.setDataEncaminhamento(eDto.getDataEncaminhamento());
+                enc.setMotivo(br.com.sias.api.model.enums.EncaminhamentoMotivo.valueOf(eDto.getMotivo()));
+                enc.setStatus(eDto.getStatus());
+                enc.setObservacoes(eDto.getObservacoes());
+                enc.setPaciente(paciente);
+
+                return enc;
+            }).toList();
+
+            paciente.setEncaminhamentos(listaEncaminhamentos);
+        }
+
+        return paciente; // 👈 O return final fica AQUI, no fechamento do método!
     }
 
     private PacienteResponse converterParaResponse(Paciente paciente) {

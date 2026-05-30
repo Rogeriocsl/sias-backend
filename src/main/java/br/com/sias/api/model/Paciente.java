@@ -64,8 +64,11 @@ public class Paciente {
     @JoinColumn(name = "endereco_id")
     private Endereco endereco;
 
-    @NotNull(message = "O paciente deve estar vinculado a uma Turma")
+   // @NotNull(message = "O paciente deve estar vinculado a uma Turma")
     @ManyToOne(optional = false)
     @JoinColumn(name = "turma_id", nullable = false)
     private Turmas turmas;
+
+    @OneToMany(mappedBy = "paciente", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Encaminhamento> encaminhamentos;
 }

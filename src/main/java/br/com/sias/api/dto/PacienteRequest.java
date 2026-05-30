@@ -20,4 +20,5 @@ public class PacienteRequest {
     private Long unidadeId;
     private List<DoencaCronica> condicoesSaude;
     private Long turmaId;
+    private List<EncaminhamentoRequest> encaminhamentos;
 }
