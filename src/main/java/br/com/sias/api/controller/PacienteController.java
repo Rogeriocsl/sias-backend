@@ -46,4 +46,9 @@ public class PacienteController {
         service.deletar(id);
         return ResponseEntity.noContent().build();
     }
+
+    @GetMapping("/turmas/{id}")
+    public ResponseEntity<List<PacienteResponse>> listarPorTurma(@PathVariable Long id) {
+        return ResponseEntity.ok(service.listarPacientesDaTurma(id));
+    }
 }

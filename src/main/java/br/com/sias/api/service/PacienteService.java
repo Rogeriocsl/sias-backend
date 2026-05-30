@@ -132,6 +132,14 @@ public class PacienteService {
         return converterParaResponse(paciente);
     }
 
+    public List<PacienteResponse> listarPacientesDaTurma(Long turmaId) {
+        List<Paciente> pacientes = repository.findByTurmasId(turmaId);
+
+        return pacientes.stream()
+                .map(this::converterParaResponse)
+                .toList();
+    }
+
     private Paciente converterParaEntity(PacienteRequest dto) {
         Paciente paciente = new Paciente();
         UnidadeBasicaSaude ubs = unidadeRepository.findById(dto.getUnidadeId()).orElseThrow(() -> new NotFoundException("Unidade Básica de Saúde não encontrada"));
