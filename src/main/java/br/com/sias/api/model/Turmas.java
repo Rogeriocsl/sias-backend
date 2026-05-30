@@ -29,9 +29,4 @@ public class Turmas {
     @Size(min = 3, max = 150, message = "O nome do Educador deve ter entre 3 à 150 caractéres")
     @Column(nullable = false, length = 150)
     private String educador;
-
-    @NotNull(message = "A quantidade de alunos deve ser informada")
-    @Column(nullable = false)
-    @PositiveOrZero(message = "A quantidade de alunos não pode ser negativa")
-    private Integer quantidadeAlunos;
 }

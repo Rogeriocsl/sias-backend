@@ -26,7 +26,6 @@ public class TurmasService {
 
         existente.setNome(dto.getNome());
         existente.setEducador(dto.getEducador());
-        existente.setQuantidadeAlunos(dto.getQuantidadeAlunos());
 
         Turmas atualizado = repository.save(existente);
 
@@ -54,7 +53,6 @@ public class TurmasService {
 
         turmas.setNome(dto.getNome());
         turmas.setEducador(dto.getEducador());
-        turmas.setQuantidadeAlunos(dto.getQuantidadeAlunos());
 
         return turmas;
     }
@@ -65,7 +63,6 @@ public class TurmasService {
         resp.setId(turmas.getId());
         resp.setNome(turmas.getNome());
         resp.setEducador(turmas.getEducador());
-        resp.setQuantidadeAlunos(turmas.getQuantidadeAlunos());
 
         return resp;
     }

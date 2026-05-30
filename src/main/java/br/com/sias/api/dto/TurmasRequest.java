@@ -7,5 +7,4 @@ import lombok.*;
 public class TurmasRequest {
     private String nome;
     private String educador;
-    private Integer quantidadeAlunos;
 }
