@@ -41,7 +41,8 @@ public class SecurityConfig {
                                 "/api/usuarios/**",
                                 "/api/unidade/**",
                                 "/api/pacientes/**",
-                                "/api/turmas/**"
+                                "/api/turmas/**",
+                                "/api/presenca/**"
 
                         ).permitAll()
                         // qualquer outra rota exige autenticação
