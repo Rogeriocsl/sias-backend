@@ -33,7 +33,7 @@ public class PacienteService {
 
     public PacienteResponse BuscarComHistorico(Long id) {
         Paciente paciente = repository.findById(id)
-            .orElseThrow(() -> new RuntimeException("Paciente não Encontrado"));
+                .orElseThrow(() -> new RuntimeException("Paciente não Encontrado"));
 
         PacienteResponse pacienteResponse = new PacienteResponse();
 
@@ -45,7 +45,9 @@ public class PacienteService {
         pacienteResponse.setGenero(paciente.getGenero());
         pacienteResponse.setTipoSanguineo(paciente.getTipoSanguineo());
         pacienteResponse.setUnidadeId(paciente.getUnidadeOrigem().getId());
-        pacienteResponse.setTurmaId(paciente.getTurmas().getId());
+
+        pacienteResponse.setTurmaId(paciente.getTurmas() != null ? paciente.getTurmas().getId() : null);
+
         pacienteResponse.setCondicoesSaude(
                 paciente.getCondicoesSaude().stream()
                         .map(Enum::name)
@@ -65,9 +67,7 @@ public class PacienteService {
         );
 
         return pacienteResponse;
-
     }
-
 
     public PacienteResponse criar(PacienteRequest dto) {
         Paciente paciente = converterParaEntity(dto);
@@ -77,8 +77,12 @@ public class PacienteService {
 
     public PacienteResponse atualizar(Long id, PacienteRequest dto) {
         Paciente existente = repository.findById(id).orElseThrow(() -> new NotFoundException("Paciente não encontrado"));
+
+        if (dto.getUnidadeId() == null) {
+            throw new IllegalArgumentException("A Unidade Básica de Saúde (UBS) é obrigatória.");
+        }
+
         UnidadeBasicaSaude ubs = unidadeRepository.findById(dto.getUnidadeId()).orElseThrow(() -> new NotFoundException("Unidade Básica de Saúde não encontrada"));
-        Turmas turmas = turmasRepository.findById(dto.getTurmaId()).orElseThrow(() -> new NotFoundException("Turma não encontrada"));
 
         existente.setNome(dto.getNome());
         existente.setCpf(dto.getCpf());
@@ -88,7 +92,13 @@ public class PacienteService {
         existente.setTipoSanguineo(dto.getTipoSanguineo());
         existente.setCondicoesSaude(dto.getCondicoesSaude());
         existente.setUnidadeOrigem(ubs);
-        existente.setTurmas(turmas);
+
+        if (dto.getTurmaId() != null) {
+            Turmas turma = turmasRepository.findById(dto.getTurmaId()).orElse(null);
+            existente.setTurmas(turma);
+        } else {
+            existente.setTurmas(null);
+        }
 
         if (dto.getEncaminhamentos() != null && !dto.getEncaminhamentos().isEmpty()) {
             var eDto = dto.getEncaminhamentos().get(0);
@@ -142,8 +152,12 @@ public class PacienteService {
 
     private Paciente converterParaEntity(PacienteRequest dto) {
         Paciente paciente = new Paciente();
+
+        if (dto.getUnidadeId() == null) {
+            throw new IllegalArgumentException("A Unidade Básica de Saúde (UBS) é obrigatória.");
+        }
+
         UnidadeBasicaSaude ubs = unidadeRepository.findById(dto.getUnidadeId()).orElseThrow(() -> new NotFoundException("Unidade Básica de Saúde não encontrada"));
-        Turmas turmas = turmasRepository.findById(dto.getTurmaId()).orElseThrow(() -> new NotFoundException("Turma não encontrada"));
 
         paciente.setNome(dto.getNome());
         paciente.setCpf(dto.getCpf());
@@ -153,7 +167,13 @@ public class PacienteService {
         paciente.setTipoSanguineo(dto.getTipoSanguineo());
         paciente.setCondicoesSaude(dto.getCondicoesSaude());
         paciente.setUnidadeOrigem(ubs);
-        paciente.setTurmas(turmas);
+
+        if (dto.getTurmaId() != null) {
+            Turmas turma = turmasRepository.findById(dto.getTurmaId()).orElse(null);
+            paciente.setTurmas(turma);
+        } else {
+            paciente.setTurmas(null);
+        }
 
         if (dto.getEncaminhamentos() != null && !dto.getEncaminhamentos().isEmpty()) {
             List<Encaminhamento> listaEncaminhamentos = dto.getEncaminhamentos().stream().map(eDto -> {
@@ -170,7 +190,7 @@ public class PacienteService {
             paciente.setEncaminhamentos(listaEncaminhamentos);
         }
 
-        return paciente; // 👈 O return final fica AQUI, no fechamento do método!
+        return paciente;
     }
 
     private PacienteResponse converterParaResponse(Paciente paciente) {
@@ -184,7 +204,9 @@ public class PacienteService {
         resp.setGenero(paciente.getGenero());
         resp.setTipoSanguineo(paciente.getTipoSanguineo());
         resp.setUnidadeId(paciente.getUnidadeOrigem().getId());
-        resp.setTurmaId(paciente.getTurmas().getId());
+
+        resp.setTurmaId(paciente.getTurmas() != null ? paciente.getTurmas().getId() : null);
+
         resp.setCondicoesSaude(
                 paciente.getCondicoesSaude().stream()
                         .map(Enum::name)
