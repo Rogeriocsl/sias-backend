@@ -34,7 +34,6 @@ public class PacienteService {
     @Autowired
     private TurmasRepository turmasRepository;
 
-    // ── Busca completa com histórico ──────────────────────────────────────
     public PacienteResponse BuscarComHistorico(Long id) {
         Paciente paciente = repository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Paciente não Encontrado"));
@@ -56,7 +55,6 @@ public class PacienteService {
         return pacienteResponse;
     }
 
-    // ── CRUD ──────────────────────────────────────────────────────────────
     public PacienteResponse criar(PacienteRequest dto) {
         Paciente paciente = converterParaEntity(dto);
         Paciente salvo = repository.save(paciente);
@@ -119,7 +117,6 @@ public class PacienteService {
                 .toList();
     }
 
-    // ── Conversores ───────────────────────────────────────────────────────
     private Paciente converterParaEntity(PacienteRequest dto) {
         Paciente paciente = new Paciente();
 
@@ -144,7 +141,6 @@ public class PacienteService {
             paciente.setTurmas(turma);
         }
 
-        // ── Cria encaminhamento PENDENTE automaticamente ──────────────────
         Encaminhamento encaminhamento = new Encaminhamento();
         encaminhamento.setPaciente(paciente);
         encaminhamento.setMotivo(EncaminhamentoMotivo.OUTRO);

@@ -24,7 +24,6 @@ public class SecurityConfig {
 
     private final JwtFilter jwtFilter;
 
-    // Injeta o bean já definido em CorsConfig.java
     private final CorsConfigurationSource corsConfigurationSource;
 
     @Bean

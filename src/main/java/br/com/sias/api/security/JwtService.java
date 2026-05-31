@@ -33,9 +33,9 @@ public class JwtService {
                     .withIssuer(ISSUER)
                     .build()
                     .verify(token)
-                    .getSubject(); // retorna o login se válido
+                    .getSubject();
         } catch (JWTVerificationException e) {
-            return null; // token inválido ou expirado
+            return null;
         }
     }
 

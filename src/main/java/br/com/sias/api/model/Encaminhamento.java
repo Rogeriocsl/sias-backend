@@ -24,7 +24,6 @@ public class Encaminhamento {
     @JoinColumn(name = "paciente_id", nullable = false)
     private Paciente paciente;
 
-    /** Turma para onde o paciente está sendo direcionado */
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "turma_id", nullable = true)
     private Turmas turma;

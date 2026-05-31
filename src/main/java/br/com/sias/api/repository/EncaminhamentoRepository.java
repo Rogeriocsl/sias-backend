@@ -17,10 +17,6 @@ public interface EncaminhamentoRepository extends JpaRepository<Encaminhamento, 
 
     List<Encaminhamento> findByStatus(EncaminhamentoStatus status);
 
-    /**
-     * JOIN FETCH em paciente e turma evita o problema N+1
-     * que causava pacienteNome/turmaNome nulos na listagem.
-     */
     @Query("""
         SELECT e FROM Encaminhamento e
         LEFT JOIN FETCH e.paciente

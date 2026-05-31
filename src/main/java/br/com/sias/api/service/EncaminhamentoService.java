@@ -28,7 +28,6 @@ public class EncaminhamentoService {
     @Autowired
     private TurmasRepository turmasRepository;
 
-    // ── Converter ─────────────────────────────────────────────────────────
     private EncaminhamentoResponse converterParaResponse(Encaminhamento e) {
         EncaminhamentoResponse r = new EncaminhamentoResponse();
 
@@ -73,7 +72,6 @@ public class EncaminhamentoService {
         return enc;
     }
 
-    // ── CRUD ──────────────────────────────────────────────────────────────
 
     public EncaminhamentoResponse criar(EncaminhamentoRequest dto) {
         return converterParaResponse(repository.save(converterParaEntity(dto)));
@@ -90,7 +88,6 @@ public class EncaminhamentoService {
         Encaminhamento enc = repository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Encaminhamento não encontrado"));
 
-        // String → enum com valueOf (lança IllegalArgumentException se inválido)
         if (dto.getStatus() != null) {
             enc.setStatus(EncaminhamentoStatus.valueOf(dto.getStatus()));
         }
@@ -102,7 +99,6 @@ public class EncaminhamentoService {
                     .orElseThrow(() -> new RuntimeException("Turma não encontrada"));
             enc.setTurma(turma);
 
-            // Sincroniza a turma no paciente também
             Paciente paciente = enc.getPaciente();
             paciente.setTurmas(turma);
             pacienteRepository.save(paciente);
