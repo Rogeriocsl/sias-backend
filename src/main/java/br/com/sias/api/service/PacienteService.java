@@ -12,10 +12,13 @@ import br.com.sias.api.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
 public class PacienteService {
+
     @Autowired
     private PacienteRepository repository;
 
@@ -31,28 +34,12 @@ public class PacienteService {
     @Autowired
     private TurmasRepository turmasRepository;
 
+    // ── Busca completa com histórico ──────────────────────────────────────
     public PacienteResponse BuscarComHistorico(Long id) {
         Paciente paciente = repository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Paciente não Encontrado"));
 
-        PacienteResponse pacienteResponse = new PacienteResponse();
-
-        pacienteResponse.setId(paciente.getId());
-        pacienteResponse.setNome(paciente.getNome());
-        pacienteResponse.setCpf(paciente.getCpf());
-        pacienteResponse.setDataNascimento(paciente.getDataNascimento());
-        pacienteResponse.setTelefone(paciente.getTelefone());
-        pacienteResponse.setGenero(paciente.getGenero());
-        pacienteResponse.setTipoSanguineo(paciente.getTipoSanguineo());
-        pacienteResponse.setUnidadeId(paciente.getUnidadeOrigem().getId());
-
-        pacienteResponse.setTurmaId(paciente.getTurmas() != null ? paciente.getTurmas().getId() : null);
-
-        pacienteResponse.setCondicoesSaude(
-                paciente.getCondicoesSaude().stream()
-                        .map(Enum::name)
-                        .toList()
-        );
+        PacienteResponse pacienteResponse = converterParaResponse(paciente);
 
         pacienteResponse.setEncaminhamentos(
                 encaminhamentosRepository.findByPacienteId(id).stream()
@@ -69,6 +56,7 @@ public class PacienteService {
         return pacienteResponse;
     }
 
+    // ── CRUD ──────────────────────────────────────────────────────────────
     public PacienteResponse criar(PacienteRequest dto) {
         Paciente paciente = converterParaEntity(dto);
         Paciente salvo = repository.save(paciente);
@@ -76,13 +64,15 @@ public class PacienteService {
     }
 
     public PacienteResponse atualizar(Long id, PacienteRequest dto) {
-        Paciente existente = repository.findById(id).orElseThrow(() -> new NotFoundException("Paciente não encontrado"));
+        Paciente existente = repository.findById(id)
+                .orElseThrow(() -> new NotFoundException("Paciente não encontrado"));
 
         if (dto.getUnidadeId() == null) {
             throw new IllegalArgumentException("A Unidade Básica de Saúde (UBS) é obrigatória.");
         }
 
-        UnidadeBasicaSaude ubs = unidadeRepository.findById(dto.getUnidadeId()).orElseThrow(() -> new NotFoundException("Unidade Básica de Saúde não encontrada"));
+        UnidadeBasicaSaude ubs = unidadeRepository.findById(dto.getUnidadeId())
+                .orElseThrow(() -> new NotFoundException("Unidade Básica de Saúde não encontrada"));
 
         existente.setNome(dto.getNome());
         existente.setCpf(dto.getCpf());
@@ -100,32 +90,12 @@ public class PacienteService {
             existente.setTurmas(null);
         }
 
-        if (dto.getEncaminhamentos() != null && !dto.getEncaminhamentos().isEmpty()) {
-            var eDto = dto.getEncaminhamentos().get(0);
-            Encaminhamento enc;
-            if (existente.getEncaminhamentos() != null && !existente.getEncaminhamentos().isEmpty()) {
-                enc = existente.getEncaminhamentos().get(existente.getEncaminhamentos().size() - 1);
-            } else {
-                enc = new Encaminhamento();
-                enc.setPaciente(existente);
-                existente.getEncaminhamentos().add(enc);
-            }
-
-            enc.setDataEncaminhamento(eDto.getDataEncaminhamento());
-            enc.setMotivo(br.com.sias.api.model.enums.EncaminhamentoMotivo.valueOf(eDto.getMotivo()));
-            enc.setStatus(eDto.getStatus());
-            enc.setObservacoes(eDto.getObservacoes());
-        }
-
         Paciente atualizado = repository.save(existente);
-
         return converterParaResponse(atualizado);
     }
 
     public List<PacienteResponse> listar() {
-        List<Paciente> pacientes = repository.findAll();
-
-        return pacientes.stream()
+        return repository.findAll().stream()
                 .map(this::converterParaResponse)
                 .toList();
     }
@@ -138,18 +108,18 @@ public class PacienteService {
     }
 
     public PacienteResponse buscarPorId(Long id) {
-        Paciente paciente = repository.findById(id).orElseThrow(() -> new NotFoundException("Paciente não encontrado"));
+        Paciente paciente = repository.findById(id)
+                .orElseThrow(() -> new NotFoundException("Paciente não encontrado"));
         return converterParaResponse(paciente);
     }
 
     public List<PacienteResponse> listarPacientesDaTurma(Long turmaId) {
-        List<Paciente> pacientes = repository.findByTurmasId(turmaId);
-
-        return pacientes.stream()
+        return repository.findByTurmasId(turmaId).stream()
                 .map(this::converterParaResponse)
                 .toList();
     }
 
+    // ── Conversores ───────────────────────────────────────────────────────
     private Paciente converterParaEntity(PacienteRequest dto) {
         Paciente paciente = new Paciente();
 
@@ -157,7 +127,8 @@ public class PacienteService {
             throw new IllegalArgumentException("A Unidade Básica de Saúde (UBS) é obrigatória.");
         }
 
-        UnidadeBasicaSaude ubs = unidadeRepository.findById(dto.getUnidadeId()).orElseThrow(() -> new NotFoundException("Unidade Básica de Saúde não encontrada"));
+        UnidadeBasicaSaude ubs = unidadeRepository.findById(dto.getUnidadeId())
+                .orElseThrow(() -> new NotFoundException("Unidade Básica de Saúde não encontrada"));
 
         paciente.setNome(dto.getNome());
         paciente.setCpf(dto.getCpf());
@@ -171,24 +142,19 @@ public class PacienteService {
         if (dto.getTurmaId() != null) {
             Turmas turma = turmasRepository.findById(dto.getTurmaId()).orElse(null);
             paciente.setTurmas(turma);
-        } else {
-            paciente.setTurmas(null);
         }
 
-        if (dto.getEncaminhamentos() != null && !dto.getEncaminhamentos().isEmpty()) {
-            List<Encaminhamento> listaEncaminhamentos = dto.getEncaminhamentos().stream().map(eDto -> {
-                Encaminhamento enc = new Encaminhamento();
-                enc.setDataEncaminhamento(eDto.getDataEncaminhamento());
-                enc.setMotivo(br.com.sias.api.model.enums.EncaminhamentoMotivo.valueOf(eDto.getMotivo()));
-                enc.setStatus(eDto.getStatus());
-                enc.setObservacoes(eDto.getObservacoes());
-                enc.setPaciente(paciente);
+        // ── Cria encaminhamento PENDENTE automaticamente ──────────────────
+        Encaminhamento encaminhamento = new Encaminhamento();
+        encaminhamento.setPaciente(paciente);
+        encaminhamento.setMotivo(EncaminhamentoMotivo.OUTRO);
+        encaminhamento.setStatus(EncaminhamentoStatus.PENDENTE);
+        encaminhamento.setDataEncaminhamento(LocalDate.now());
+        encaminhamento.setObservacoes("");
 
-                return enc;
-            }).toList();
-
-            paciente.setEncaminhamentos(listaEncaminhamentos);
-        }
+        List<Encaminhamento> listaEncaminhamentos = new ArrayList<>();
+        listaEncaminhamentos.add(encaminhamento);
+        paciente.setEncaminhamentos(listaEncaminhamentos);
 
         return paciente;
     }
@@ -204,9 +170,7 @@ public class PacienteService {
         resp.setGenero(paciente.getGenero());
         resp.setTipoSanguineo(paciente.getTipoSanguineo());
         resp.setUnidadeId(paciente.getUnidadeOrigem().getId());
-
         resp.setTurmaId(paciente.getTurmas() != null ? paciente.getTurmas().getId() : null);
-
         resp.setCondicoesSaude(
                 paciente.getCondicoesSaude().stream()
                         .map(Enum::name)
