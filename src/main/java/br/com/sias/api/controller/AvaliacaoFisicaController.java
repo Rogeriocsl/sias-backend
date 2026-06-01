@@ -28,8 +28,13 @@ public class AvaliacaoFisicaController {
     }
 
     @GetMapping
-    public List<AvaliacaoFisica> listar() {
-        return service.listar();
+    public ResponseEntity<List<AvaliacaoFisicaResponse>> listar() {
+        return ResponseEntity.ok(service.listar());
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<AvaliacaoFisicaResponse> buscarPorId(@PathVariable Long id) {
+        return ResponseEntity.ok(service.buscarPorId(id));
     }
 
     @PutMapping("/{id}")

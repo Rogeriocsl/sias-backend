@@ -43,8 +43,17 @@ public class AvaliacaoFisicaService {
         return converterParaResponseAvaliacao(atualizado);
     }
 
-    public List<AvaliacaoFisica> listar() {
-        return repository.findAll();
+    public List<AvaliacaoFisicaResponse> listar() {
+        return repository.findAll()
+                .stream()
+                .map(this::converterParaResponseAvaliacao)
+                .toList();
+    }
+
+    public AvaliacaoFisicaResponse buscarPorId(Long id) {
+        AvaliacaoFisica avaliacao = repository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Avaliação não encontrada"));
+        return converterParaResponseAvaliacao(avaliacao);
     }
 
     public void deletar(Long id) {
