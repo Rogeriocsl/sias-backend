@@ -20,7 +20,7 @@ Para rodar o projeto, você e o time de 6 colaboradores precisam ter instalado:
 
 1.  **Docker & Docker Compose** (V2 recomendado)
 2.  **Git**
-3.  **Postman ou Insomnia** (Para testar os endpoints da API)
+3.  **Swagger** (Para testar os endpoints da API)
 
 ---
 
@@ -66,6 +66,9 @@ Para manter a organização, seguimos a estrutura:
 *   `src/main/java/br/com/sias/api/model`: Entidades JPA (Tabelas do banco).
 *   `src/main/java/br/com/sias/api/repository`: Interfaces de acesso a dados.
 *   `src/main/java/br/com/sias/api/service`: Regras de negócio e cálculos.
+*   `src/main/java/br/com/sias/api/dto`: Transferência de dados.
+*   `src/main/java/br/com/sias/api/excepition`: Classe para tratamento de exceções das aplicações.
+*   `src/main/java/br/com/sias/api/security`: Configurações e regras de segurança da aplicação.
 
 ---
 
