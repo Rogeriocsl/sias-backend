@@ -30,8 +30,8 @@ public class PresencaController {
     }
 
     @GetMapping
-    public List<Presenca> listar() {
-        return service.listar();
+    public ResponseEntity<List<PresencaResponse>> listar() {
+        return ResponseEntity.ok(service.listar());
     }
 
     @PutMapping("/{id}")

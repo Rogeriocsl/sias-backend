@@ -51,8 +51,12 @@ public class PresencaService {
         return converterParaResponse(presenca);
     }
 
-    public List<Presenca> listar() {
-        return repository.findAll();
+    public List<PresencaResponse> listar() {
+        List<Presenca> presencas = repository.findAll();
+
+        return presencas.stream()
+                .map(this::converterParaResponse)
+                .toList();
     }
 
     public Optional<PresencaResponse> buscarPorPacienteEData(Long pacienteId, LocalDate data) {
