@@ -4,6 +4,7 @@ import br.com.sias.api.model.Agendamento;
 import br.com.sias.api.model.enums.StatusAgendamento;
 import lombok.Getter;
 import lombok.Setter;
+
 import java.time.LocalDateTime;
 
 @Getter @Setter

@@ -15,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class AgendamentoService {
@@ -53,9 +54,11 @@ public class AgendamentoService {
         Agendamento salvo = repository.save(agendamento);
         return new AgendamentoResponse(salvo);
     }
-
-    public List<Agendamento> listar() {
-        return repository.findAll();
+    public List<AgendamentoResponse> listar() {
+        return repository.findAll()
+                .stream()
+                .map(AgendamentoResponse::new)
+                .collect(Collectors.toList());
     }
 
     public AgendamentoResponse atualizar(Long id, AgendamentoRequest dto) {
@@ -73,6 +76,9 @@ public class AgendamentoService {
         agendamento.setDataHora(dto.getDataHora());
         agendamento.setObservacao(dto.getObservacao());
 
+        if (dto.getStatus() != null) {
+            agendamento.setStatus(dto.getStatus());
+        }
         return new AgendamentoResponse(repository.save(agendamento));
     }
 

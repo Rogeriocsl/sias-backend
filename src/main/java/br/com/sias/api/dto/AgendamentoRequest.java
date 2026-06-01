@@ -1,5 +1,6 @@
 package br.com.sias.api.dto;
 
+import br.com.sias.api.model.enums.StatusAgendamento;
 import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;
@@ -17,4 +18,6 @@ public class AgendamentoRequest {
     private LocalDateTime dataHora;
 
     private String observacao;
+
+    private StatusAgendamento status;
 }

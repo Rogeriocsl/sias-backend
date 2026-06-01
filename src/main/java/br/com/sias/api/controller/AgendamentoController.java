@@ -26,7 +26,7 @@ public class AgendamentoController {
     }
 
     @GetMapping
-    public ResponseEntity<List<Agendamento>> listar() {
+    public ResponseEntity<List<AgendamentoResponse>> listar() {
         return ResponseEntity.ok(service.listar());
     }
 

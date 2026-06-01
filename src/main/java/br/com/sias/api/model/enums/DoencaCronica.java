@@ -1,12 +1,61 @@
 package br.com.sias.api.model.enums;
 
 public enum DoencaCronica {
-    FIBROMIALGIA,
-    HIPERTENSAO,
-    DIABETES1,
-    DIABETES2,
-    DIABETES3,
+    // Doenças Cardiovasculares
+    HIPERTENSAO_ARTERIAL,
+    INSUFICIENCIA_CARDIACA,
+    DOENCA_ARTERIAL_CORONARIANA,
+    POS_INFARTO,
+    DOENCA_VASCULAR_PERIFERICA,
+    CARDIOPATIA,
+
+    // Doenças Metabólicas e Endócrinas
+    DIABETES,
     OBESIDADE,
+    SOBREPESO,
+    SINDROME_METABOLICA,
+    DISLIPIDEMIA,
+
+    // Doenças Osteomusculares
+    LOMBALGIA,
+    CERVICALGIA,
+    HERNIA_DE_DISCO,
+    ESCOLIOSE,
     ARTROSE,
-    OUTROS
+    OSTEOPOROSE,
+    ARTRITE_REUMATOIDE,
+    FIBROMIALGIA,
+
+    // Alterações Neurológicas
+    SEQUELA_DE_AVC,
+    DOENCA_DE_PARKINSON,
+    ESCLEROSE_MULTIPLA,
+    NEUROPATIAS_PERIFERICAS,
+    DEFICIT_DE_EQUILIBRIO_E_COORDENACAO,
+
+    // Problemas de Mobilidade e Funcionalidade
+    DIFICULDADE_DE_LOCOMOCAO,
+    FRAQUEZA_MUSCULAR,
+    SARCOPENIA,
+    RISCO_DE_QUEDAS,
+    LIMITACAO_FUNCIONAL_DO_IDOSO,
+
+    // Doenças Respiratórias
+    ASMA,
+    DPOC,
+    BRONQUITE_CRONICA,
+
+    // Saúde Mental
+    ANSIEDADE,
+    DEPRESSAO,
+    ESTRESSE_CRONICO,
+    TRANSTORNOS_DO_SONO,
+
+    SEDENTARISMO,
+    DOR_CRONICA,
+    POS_COVID_COM_LIMITACOES_FISICAS,
+    REABILITACAO_POS_CIRURGICA,
+    PACIENTE_ONCOLOGICO,
+
+    OUTRO
 }

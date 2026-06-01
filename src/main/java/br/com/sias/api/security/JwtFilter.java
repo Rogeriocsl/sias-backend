@@ -25,14 +25,17 @@ public class JwtFilter extends OncePerRequestFilter {
     protected boolean shouldNotFilter(HttpServletRequest request) {
         String path = request.getServletPath();
 
-        return path.startsWith("/auth")
-                || path.startsWith("/api/turmas")
-                || path.startsWith("/api/usuarios")
-                || path.startsWith("/swagger-ui")
-                || path.startsWith("/api/unidade")
-                || path.startsWith("/api/pacientes")
-                || path.startsWith("/v3/api-docs")
-                || path.startsWith("/api/encaminhamentos");
+        return path.startsWith("/auth/")
+                || path.startsWith("/api/turmas/")
+                || path.startsWith("/api/usuarios/")
+                || path.startsWith("/swagger-ui/")
+                || path.startsWith("/api/unidade/")
+                || path.startsWith("/api/pacientes/")
+                || path.startsWith("/v3/api-docs/")
+                || path.startsWith("/api/encaminhamentos/")
+                || path.startsWith("/api/presenca/")
+                || path.startsWith("/api/dashboard/")
+                || path.startsWith("/api/agendamentos/");
 
 
     }
