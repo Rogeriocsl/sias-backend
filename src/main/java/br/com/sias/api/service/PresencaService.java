@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class PresencaService {
@@ -58,6 +59,10 @@ public class PresencaService {
                 .toList();
     }
 
+    public Optional<PresencaResponse> buscarPorPacienteEData(Long pacienteId, LocalDate data) {
+        return repository.findByPacienteIdAndDataPresenca(pacienteId, data)
+                .map(this::converterParaResponse);
+    }
     public void deletar(Long id) {
         if (!repository.existsById(id)) {
             throw new RuntimeException("Presença não encontrada");

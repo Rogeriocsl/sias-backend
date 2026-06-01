@@ -8,12 +8,12 @@ import lombok.*; // Importa todas as anotações do Lombok
 import java.time.LocalDate;
 
 @Entity
-@Table(name = "presencas") // Mudado de encaminhamentos para presencas
+@Table(name = "presencas")
 @Getter
 @Setter
-@NoArgsConstructor // Construtor sem argumentos
-@AllArgsConstructor // Construtor com todos os argumentos
-@Builder // Permite usar o padrão Builder (ex: Presenca.builder()...)
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
 public class Presenca {
 
     @Id

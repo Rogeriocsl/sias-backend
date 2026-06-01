@@ -13,6 +13,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @RestController
@@ -55,5 +56,13 @@ public class PresencaController {
     @GetMapping("/paciente/{id}")
     public List<Presenca> historicoPresencaParciente(@PathVariable Long id){
         return service.historicoPresencaParciente(id);
+    }
+    @GetMapping("/paciente/{id}/data/{data}")
+    public ResponseEntity<PresencaResponse> buscarPorPacienteEData(
+            @PathVariable Long id,
+            @PathVariable String data) {
+        return service.buscarPorPacienteEData(id, LocalDate.parse(data))
+                .map(ResponseEntity::ok)
+                .orElse(ResponseEntity.notFound().build());
     }
 }
