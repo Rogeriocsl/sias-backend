@@ -32,8 +32,10 @@ public class TurmasService {
         return converterParaResponse(atualizado);
     }
 
-    public List<Turmas> listar() {
-        return repository.findAll();
+    public List<TurmasResponse> listar() {
+        return repository.findAll().stream()
+                .map(this::converterParaResponse)
+                .toList();
     }
 
     public void deletar(Long id) {

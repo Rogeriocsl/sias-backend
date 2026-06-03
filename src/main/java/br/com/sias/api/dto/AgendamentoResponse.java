@@ -10,6 +10,8 @@ import java.time.LocalDateTime;
 @Getter @Setter
 public class AgendamentoResponse {
     private Long id;
+    private Long pacienteId;
+    private Long instrutorId;
     private String nomePaciente;
     private String nomeInstrutor;
     private LocalDateTime dataHora;
@@ -18,6 +20,8 @@ public class AgendamentoResponse {
 
     public AgendamentoResponse(Agendamento agendamento) {
         this.id = agendamento.getId();
+        this.pacienteId = agendamento.getPaciente().getId();
+        this.instrutorId = agendamento.getInstrutor().getId();
         this.nomePaciente = agendamento.getPaciente().getNome();
         this.nomeInstrutor = agendamento.getInstrutor().getNome();
         this.dataHora = agendamento.getDataHora();

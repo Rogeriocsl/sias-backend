@@ -1,9 +1,6 @@
 package br.com.sias.api.service;
 
-import br.com.sias.api.dto.AvaliacaoFisicaResponse;
-import br.com.sias.api.dto.EncaminhamentoResponse;
-import br.com.sias.api.dto.PacienteRequest;
-import br.com.sias.api.dto.PacienteResponse;
+import br.com.sias.api.dto.*;
 import br.com.sias.api.exception.NotFoundException;
 import br.com.sias.api.model.*;
 import br.com.sias.api.model.enums.EncaminhamentoMotivo;
@@ -34,6 +31,9 @@ public class PacienteService {
     @Autowired
     private TurmasRepository turmasRepository;
 
+    @Autowired
+    private PresencaRepository presencaRepository;
+
     public PacienteResponse BuscarComHistorico(Long id) {
         Paciente paciente = repository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Paciente não Encontrado"));
@@ -53,6 +53,48 @@ public class PacienteService {
         );
 
         return pacienteResponse;
+    }
+
+    public PacienteDetalhesResponse buscarDetalhes(Long id) {
+        Paciente paciente = repository.findById(id)
+                .orElseThrow(() -> new NotFoundException("Paciente não encontrado"));
+
+        PacienteDetalhesResponse.DadosCadastrais dados =
+                PacienteDetalhesResponse.DadosCadastrais.builder()
+                        .nome(paciente.getNome())
+                        .cpf(paciente.getCpf())
+                        .telefone(paciente.getTelefone())
+                        .sexo(paciente.getGenero() != null ? paciente.getGenero().name() : null)
+                        .ubsf(paciente.getUnidadeOrigem() != null
+                                ? paciente.getUnidadeOrigem().getNomeUnidade() : null)
+                        .turma(paciente.getTurmas() != null
+                                ? paciente.getTurmas().getNome() : null)
+                        .dataNascimento(paciente.getDataNascimento() != null
+                                ? paciente.getDataNascimento().toString() : null)
+                        .condicoesSaude(paciente.getCondicoesSaude().stream()
+                                .map(Enum::name)
+                                .toList())
+                        .build();
+
+        List<PacienteDetalhesResponse.PresencaItem> historico =
+                presencaRepository.findByPacienteId(id).stream()
+                        .map(p -> PacienteDetalhesResponse.PresencaItem.builder()
+                                .data(p.getDataPresenca().toString())
+                                .presente(p.getStatus().name().equals("PRESENTE"))
+                                .status(p.getStatus().name())
+                                .build())
+                        .toList();
+
+        List<AvaliacaoFisicaResponse> evolucoes =
+                avaliacoesRepository.findByPacienteId(id).stream()
+                        .map(this::converterAvaliacaoParaResponse)
+                        .toList();
+
+        return PacienteDetalhesResponse.builder()
+                .dados(dados)
+                .historicoPresenca(historico)
+                .evolucoes(evolucoes)
+                .build();
     }
 
     public PacienteResponse criar(PacienteRequest dto) {

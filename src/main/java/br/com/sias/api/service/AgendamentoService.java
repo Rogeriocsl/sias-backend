@@ -61,6 +61,12 @@ public class AgendamentoService {
                 .collect(Collectors.toList());
     }
 
+    public AgendamentoResponse buscarPorId(Long id) {
+        Agendamento agendamento = repository.findById(id)
+                .orElseThrow(() -> new NotFoundException("Agendamento não encontrado"));
+        return new AgendamentoResponse(agendamento);
+    }
+
     public AgendamentoResponse atualizar(Long id, AgendamentoRequest dto) {
         Agendamento agendamento = repository.findById(id)
                 .orElseThrow(() -> new NotFoundException("Agendamento não encontrado."));

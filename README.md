@@ -94,3 +94,30 @@ Se o banco de dados apresentar inconsistências, limpe os volumes e reinicie:
 ```bash
 docker compose down -v
 docker compose up --build
+
+## 🖥️ Frontend (sias-frontend)
+
+O backend sozinho não tem interface visual. Para usar o sistema completo, você precisa também clonar e executar o frontend.
+
+### Após subir o backend, clone o frontend:
+
+```bash
+git clone https://github.com/Rogeriocsl/sias-frontend.git
+cd sias-frontend
+npm install
+npm run dev
+```
+
+Acesse em: **`http://localhost:5173`**
+
+> **Requisito:** Node.js 18+ instalado. Consulte o [README do frontend](https://github.com/Rogeriocsl/sias-frontend) para instruções detalhadas.
+
+### Conexão entre os serviços
+
+| Serviço     | URL                                            |
+|-------------|------------------------------------------------|
+| Frontend    | `http://localhost:5173`                        |
+| API Backend | `http://localhost:8080`                        |
+| Swagger     | `http://localhost:8080/swagger-ui/index.html`  |
+
+O frontend já está configurado para apontar para `localhost:8080`. Nenhuma configuração adicional é necessária para o ambiente de desenvolvimento local.

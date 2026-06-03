@@ -47,6 +47,7 @@ public class SecurityConfig {
                                 "/api/encaminhamentos/**",
                                 "/api/presenca/**",
                                 "/api/agendamentos/**",
+                                "/api/avaliacoes/**",
                                 "/api/dashboard/**"
                         ).permitAll()
                         .anyRequest().authenticated()

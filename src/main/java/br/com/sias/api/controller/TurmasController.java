@@ -1,7 +1,6 @@
 package br.com.sias.api.controller;
 
 import br.com.sias.api.dto.*;
-import br.com.sias.api.model.Turmas;
 import br.com.sias.api.service.TurmasService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -23,8 +22,8 @@ public class TurmasController {
     }
 
     @GetMapping
-    public List<Turmas> listar() {
-        return service.listar();
+    public ResponseEntity<List<TurmasResponse>> listar() {
+        return ResponseEntity.ok(service.listar());
     }
 
     @GetMapping("/{id}")
@@ -42,4 +41,6 @@ public class TurmasController {
         service.deletar(id);
         return ResponseEntity.noContent().build();
     }
+
+
 }

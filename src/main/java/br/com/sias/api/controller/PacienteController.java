@@ -1,5 +1,6 @@
 package br.com.sias.api.controller;
 
+import br.com.sias.api.dto.PacienteDetalhesResponse;
 import br.com.sias.api.dto.PacienteRequest;
 import br.com.sias.api.dto.PacienteResponse;
 import br.com.sias.api.model.Paciente;
@@ -50,5 +51,10 @@ public class PacienteController {
     @GetMapping("/turmas/{id}")
     public ResponseEntity<List<PacienteResponse>> listarPorTurma(@PathVariable Long id) {
         return ResponseEntity.ok(service.listarPacientesDaTurma(id));
+    }
+
+    @GetMapping("/{id}/detalhes")
+    public ResponseEntity<PacienteDetalhesResponse> getDetalhes(@PathVariable Long id) {
+        return ResponseEntity.ok(service.buscarDetalhes(id));
     }
 }
